@@ -16,9 +16,12 @@ class graphData:
     def printInputData(self):
         #print vector
         print(self.inputData)
-
     def plotInputData(self,code):
         plt.figure(code)
+        # ceva = len(self.inputData)
+        # arr = []
+        # for x in range(0,ceva):
+        #     arr.append(x)
         plt.plot(self.inputData)
 
     def inputToCandle(self,candleSize):
@@ -35,19 +38,27 @@ class graphData:
             for x in self.inputData:
                 if triggerNewCandle == candleSize:
                     stopPrice = x
+                    yValue = None
                     if startPrice < stopPrice:
                         direction='green'
+                        yValue = startPrice
                     else:
                         direction = 'red'
+                        yValue = stopPrice
 
-                    newCandle = [float(xIndex), round(abs(float(startPrice)-float(stopPrice)),2),float(stopPrice),direction]
+
+
+                    newCandle = [xIndex, round(abs(startPrice-stopPrice),2),yValue,direction]
                     candles.append(newCandle)
                     #reseteaza contoare pt next candle
                     #????????????? not sure what to use for startPrice
                     # startPrice = self.inputData[xIndex + 1]
+
                     startPrice = stopPrice
                     stopPrice = None
                     triggerNewCandle = 0
+
+
 
                 triggerNewCandle +=1
                 xIndex +=1

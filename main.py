@@ -5,23 +5,18 @@ from graphHandler import *
 
 if __name__ == '__main__':
 
-    vector = readDataFromFile('AAPL.csv')
+    vector = readDataFromFile('AAPL.csv',linesToRead=100)
 
     graph = graphData()
 
     graph.setInputData(vector)
     # graph.printInputData()
+    graph.plotInputData('Input Data')
 
-    # graph.plotInputData()
-    # graph.plotCandles()
-    graph.plotInputData('input data')
-    ceva = graph.inputToCandle(candleSize=3)
 
-    print(ceva)
-    graph.plotCandles('simple candles')
-    #factor mare => gaseste mai multe candeluri ce trebuiesc modificate
-    graph.filterCandles(factor=2)
-    graph.plotCandles('filtred candles')
+    graph.inputToCandle(candleSize=3)
+    graph.plotCandles('Candles data')
+
 
     plt.show()
 

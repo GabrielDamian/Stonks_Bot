@@ -7,13 +7,13 @@ asdasd
 
 class graphData:
     inputData = None #y values, x is incremented by 1 min value in time
+
     candlesData = None #arr of arr [[x,height,bottom,direction],[],[]....]
 
     compressCandles = None  #nu tine cont de offset x pe axa, doar de combinatiile dintre trenduri si marimea lor
 
-    candleToFunction = None #din candlesData -> continuous function, tinand cont de offsetul de pe axa oX [[x,y],[x,y],[][][]...]
-
-    temp_points = None
+    candlesToFunction = None
+    # temp_points = None #
 
     def __init__(self):
         pass
@@ -83,6 +83,7 @@ class graphData:
                 plt.bar(x[0],x[1],width,x[2],color=x[3],align='center')
 
     def filterCandles(self,factor,factor_2):
+        #rezultat tot in candlesData)
         print(len(self.candlesData))
 
         #factor_1 = vecini stanga_dreapat
@@ -158,6 +159,7 @@ class graphData:
                             self.candlesData[index][3] = 'red'
 
     def groupCandles(self):
+        #rezultat in compressed candles
 
         size = len(self.candlesData)
         index = 0
@@ -210,18 +212,24 @@ class graphData:
             for x in self.compressCandles:
                 plt.bar(x[0],x[1],width,x[2],color=x[3],align='center')
 
-    def filteredCandlesToFunction(self,candleSize):
+    def candlesToFunction(self,candleSize):
+        #foloseste data din candlesData
+        #data din candlesData trebuie filtrata inainte  daca vr sa il folosim ca input in candles to function
+
+        #metoda are ca output data din points
         size = len(self.candlesData)
         index = 0
         points = []
 
+
         while index < size - 1:
             if self.candlesData[index][3] != self.candlesData[index + 1][3]:
-                print('caz 1')
+                print('caz 1, fara acumulare')
 
                 if self.candlesData[index][3] == 'red':
+                    print('caz 1.1, candle red')
                     # [x, height, bottom, direction]
-                    x_B = self.candlesData[index][0]
+                    x_B = self.candlesData[index][0]+candleSize
                     y_B = self.candlesData[index][2]
 
                     x_A = x_B - candleSize
@@ -229,6 +237,7 @@ class graphData:
                     points.append([x_A,y_A])
                     points.append([x_B,y_B])
                 else:
+                    print('cz 1.2, candles green')
                     x_B = self.candlesData[index][0]
                     y_B = self.candlesData[index][2] + self.candlesData[index][1]
 
@@ -240,16 +249,16 @@ class graphData:
 
                 index += 1
             else:
-                print('caz 2')
-
+                print('caz 2, acumulez mai multe candles')
                 temp_index = index + 1
-                print('index =', index)
                 while self.candlesData[temp_index][3] == self.candlesData[temp_index + 1][3] and temp_index < size - 2:
                     temp_index += 1
+                print(f'index:{index},temp_index:{temp_index}')
 
                 # [x, height, bottom, direction]
 
                 if self.candlesData[index][3] == 'red':
+                    print("caz 2, red")
                     x_A = self.candlesData[index][0]
                     y_A = self.candlesData[index][2] + self.candlesData[index][1]
 
@@ -260,6 +269,7 @@ class graphData:
                     points.append([x_B, y_B])
 
                 else:
+                    print("caz 2,green")
                     x_A = self.candlesData[index][0]
                     y_A = self.candlesData[index][2]
 
@@ -269,24 +279,55 @@ class graphData:
                     points.append([x_A, y_A])
                     points.append([x_B, y_B])
 
-                print('temp index = ', temp_index)
 
                 index = temp_index + 1
 
-        self.temp_points = points
 
-    def plotPoints(self,code):
+        self.candlesToFunction = points
+
+    def candlesToFunction_2(self):
+        #input - candles data
+        #output - a candles is transformed into a line
+
+        index = 0
+        # [0, 1     , 2     , 3        ]
+        # [x, height, bottom, direction]
+        while index < len(self.candlesData)-1:
+            if self.candlesData[index][3] != self.candlesData[index+1][3]:
+                #caz 1, candles consecutive diferite
+
+                #avem 2 puncte (max min candle stanga, cel din dreapta este de culoare(trend) diferit si o sa fie indexat in uratoare iteratie)
+                #trebuie doar sa adaugam cele 2 puncte in point, fara sa le mai ordonam
+
+                #optional, linie suplimentara care uneste candles intre ele (stop index candles stanga, start index candle dreapta)
+                #A -> B
+                #A'-> B'
+                #linie suplimentara B->A'
+                pass
+
+            else:
+                #caz 2, candles consecutive la fel
+                #retinem primul candle (scoatem 2 puncte din el, max si min)
+                #parcurgem pana la ultimul candle (scoatem la fel 2 puncte din el, max si min)
+                #daugam cele 2 puncte A ,B la points
+                pass
+
+
+    def plotCandlesToFunction(self,code):
         plt.figure(code)
         arr_1 = []
         arr_2 = []
-        for a in self.temp_points:
+        for a in self.candlesToFunction:
             arr_1.append(a[0]-1.5)
             arr_2.append(a[1])
 
         plt.plot(arr_1,arr_2,'r')
-        # plt.plot(self.inputData,'b')
+        plt.plot(self.inputData,'b')
+
 
     def reduceInputData(self):
+        #mediere a semnalului (media in jurul punctului pe baza vecinilor)
+
         new_points = []
         for index,a in enumerate(self.inputData):
             if index == 0 or index == len(self.inputData)-1:

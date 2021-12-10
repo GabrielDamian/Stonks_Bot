@@ -5,13 +5,14 @@ from graphHandler import *
 
 if __name__ == '__main__':
 
-    vector = readDataFromFile('AAPL.csv',linesToRead=50)
+    vector = readDataFromFile('AAPL.csv',linesToRead=200)
 
     graph = graphData()
 
     graph.setInputData(vector)
     # graph.printInputData()
-    graph.plotInputData('Input Data')
+
+    ##graph.plotInputData('Input Data')
 
     graph.inputToCandle(candleSize=3)
     # graph.plotCandles('Candles data')
@@ -22,14 +23,14 @@ if __name__ == '__main__':
 
     # print('Filtered candles',graph.candlesData);
 
-    # graph.groupCandles()
-    # graph.plotCompressedCandles('Grouped candles')
+    graph.groupCandles()
+    ##graph.plotCompressedCandles('Grouped candles')
 
 
-    graph.filteredCandlesToFunction(3)
-    graph.plotPoints('Points')
+    graph.candlesToFunction(3)
+    graph.plotCandlesToFunction('Points')
 
-    graph.reduceInputData();
+    ##graph.reduceInputData()
 
     plt.show()
 

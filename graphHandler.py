@@ -373,7 +373,7 @@ class graphData:
         for a in self.candlesToFunction:
             arr_1.append(a[0]-1.5)
             arr_2.append(a[1])
-
+#ups
         plt.plot(arr_1,arr_2,'r')
         plt.plot(self.inputData,'b')
 

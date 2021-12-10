@@ -5,7 +5,8 @@ from graphHandler import *
 
 if __name__ == '__main__':
 
-    vector = readDataFromFile('AAPL.csv',linesToRead=200)
+    candleSize = 2
+    vector = readDataFromFile('AAPL.csv',linesToRead=204)
 
     graph = graphData()
 
@@ -14,7 +15,7 @@ if __name__ == '__main__':
 
     ##graph.plotInputData('Input Data')
 
-    graph.inputToCandle(candleSize=3)
+    graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candles data')
 
     graph.filterCandles(1,0.3)
@@ -23,11 +24,12 @@ if __name__ == '__main__':
 
     # print('Filtered candles',graph.candlesData);
 
-    graph.groupCandles()
+    #DO NOT USE THIS ANYMORE!!!!!
+    # graph.groupCandles()
     ##graph.plotCompressedCandles('Grouped candles')
 
 
-    graph.candlesToFunction(3)
+    graph.candlesToFunction(candleSize)
     graph.plotCandlesToFunction('Points')
 
     ##graph.reduceInputData()

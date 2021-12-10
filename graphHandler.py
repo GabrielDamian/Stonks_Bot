@@ -84,7 +84,6 @@ class graphData:
 
     def filterCandles(self,factor,factor_2):
         #rezultat tot in candlesData)
-        print(len(self.candlesData))
 
         #factor_1 = vecini stanga_dreapat
         #factor_2 = 2 vecini la stanga si dreapta (factor 2 << factor 1)
@@ -167,14 +166,10 @@ class graphData:
 
         while index < size - 1:
             if self.candlesData[index][3] != self.candlesData[index+1][3]:
-                print('caz 1')
                 compressed_candles.append(self.candlesData[index])
                 index +=1
             else:
-                print('caz 2')
-
                 temp_index = index +1
-                print('index =',index)
                 while self.candlesData[temp_index][3] == self.candlesData[temp_index+1][3]  and temp_index < size - 2:
                     temp_index +=1
                 # [x, height, bottom, direction]
@@ -189,17 +184,14 @@ class graphData:
                     newCandle = [0,right_top_point - left_bottom_point,self.candlesData[index][2],'green']
                     compressed_candles.append(newCandle)
 
-                print('temp index = ',temp_index)
 
                 index = temp_index +1
 
-        print(compressed_candles)
         final_candles = []
         for index,a in enumerate(compressed_candles):
             temp = compressed_candles[index]
             temp[0] = index
             final_candles.append(temp)
-        print(final_candles)
 
         self.compressCandles = final_candles
 
@@ -285,9 +277,14 @@ class graphData:
 
         self.candlesToFunction = points
 
-    def candlesToFunction_2(self):
+    def candlesToFunction_2(self,candleSize):
         #input - candles data
         #output - a candles is transformed into a line
+        print('candles data:',)
+        for x in self.candlesData:
+            print(x)
+
+        points = []
 
         index = 0
         # [0, 1     , 2     , 3        ]
@@ -299,19 +296,82 @@ class graphData:
                 #avem 2 puncte (max min candle stanga, cel din dreapta este de culoare(trend) diferit si o sa fie indexat in uratoare iteratie)
                 #trebuie doar sa adaugam cele 2 puncte in point, fara sa le mai ordonam
 
-                #optional, linie suplimentara care uneste candles intre ele (stop index candles stanga, start index candle dreapta)
-                #A -> B
-                #A'-> B'
-                #linie suplimentara B->A'
-                pass
+                x = self.candlesData[index][0]
+                height = self.candlesData[index][1]
+                bottom = self.candlesData[index][2]
+                direction = self.candlesData[index][3]
+
+                x_a = None
+                y_a = None
+                x_b = None
+                y_b = None
+                if direction == 'green':
+                    #caz candle crescator (A in stanga jos, B in dreapta sus)
+                    x_a = x
+                    y_a = bottom
+
+                    x_b = x + candleSize
+                    y_b = bottom + height
+
+                else: #direction == 'green'
+                    #caz candle descrescator (A in stanga sus, B in dreapta jos)
+                    x_a = x
+                    y_a =bottom + height
+
+                    x_b = x+candleSize
+                    y_b = bottom
+
+                points.append([x_a,y_a])
+                points.append([x_b, y_b])
+
+                index +=1
 
             else:
                 #caz 2, candles consecutive la fel
                 #retinem primul candle (scoatem 2 puncte din el, max si min)
                 #parcurgem pana la ultimul candle (scoatem la fel 2 puncte din el, max si min)
                 #daugam cele 2 puncte A ,B la points
-                pass
 
+                #temp_index[color] != index[color] in mod sigur, deoarece nu se executa in else-ul aferent
+
+
+
+                temp_index = index+1
+                while self.candlesData[index][3] == self.candlesData[temp_index][3]  and temp_index < len(self.candlesData)-1:
+                    temp_index +=1
+
+                #stanga- index
+                #drepta- temp_index
+                x_a = None
+                y_a = None
+                x_b = None
+                y_b = None
+
+                # [0, 1     , 2     , 3        ]
+                # [x, height, bottom, direction]
+
+                if self.candlesData[index][3] == 'green':
+                    #A - stanga jos (index), B - dreapta sus (temp_index)
+                    x_a = self.candlesData[index][0]
+                    y_a = self.candlesData[index][2]
+
+                    x_b = self.candlesData[temp_index][0]
+                    y_b = self.candlesData[temp_index][2] + self.candlesData[temp_index][1] #bottom + height
+
+                else: #color = 'red'
+                    #A - stanga sus (index), B -  dreapta jos (temp_index)
+                    x_a = self.candlesData[index][0]
+                    y_a = self.candlesData[index][2]
+
+                    x_b = self.candlesData[temp_index][0]
+                    y_b = self.candlesData[temp_index][2] + self.candlesData[temp_index][1] #bottom + height
+
+                points.append([x_a, y_a])
+                points.append([x_b, y_b])
+                index = temp_index+1
+
+        print('points cand to fct 2:', points)
+        self.candlesToFunction = points
 
     def plotCandlesToFunction(self,code):
         plt.figure(code)

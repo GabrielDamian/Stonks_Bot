@@ -88,7 +88,7 @@ class graphData:
         #factor_1 = vecini stanga_dreapat
         #factor_2 = 2 vecini la stanga si dreapta (factor 2 << factor 1)
 
-
+        counter_schimbari = 0
         candles_to_remove = []
 
         if self.candlesData == None:
@@ -139,23 +139,26 @@ class graphData:
                             changeColor = True
 
                     #suplimentar, factor vecin prea mare
-                    factor_vecin_prea_mare = 4
-                    # if x[1] * factor_vecin_prea_mare <= self.candlesData[index - 1][1] or x[1] * factor_vecin_prea_mare <= self.candlesData[index + 1][1]:
-                    #     changeColor = False
-                    #
-                    filtru_candles_extrem_de_mici = 10
-                    if x[1] < filtru_candles_extrem_de_mici:
-                        pass
-                    else:
-                        if x[1] * factor_vecin_prea_mare <= self.candlesData[index - 1][1] or x[1] * factor_vecin_prea_mare <= self.candlesData[index + 1][1]:
-                            changeColor = False
+                    # factor_vecin_prea_mare = 4
+                    # # if x[1] * factor_vecin_prea_mare <= self.candlesData[index - 1][1] or x[1] * factor_vecin_prea_mare <= self.candlesData[index + 1][1]:
+                    # #     changeColor = False
+                    # #
+                    # filtru_candles_extrem_de_mici = 10
+                    # if x[1] < filtru_candles_extrem_de_mici:
+                    #     pass
+                    # else:
+                    #     if x[1] * factor_vecin_prea_mare <= self.candlesData[index - 1][1] or x[1] * factor_vecin_prea_mare <= self.candlesData[index + 1][1]:
+                    #         changeColor = False
 
                     if changeColor == True:
+                        counter_schimbari += 1
                         candles_to_remove.append(index)
                         if x[3] == 'red':
+
                             self.candlesData[index][3] = 'green'
                         else :
                             self.candlesData[index][3] = 'red'
+        print(f"am schimbat: {counter_schimbari} culori in filtru!")
 
     def groupCandles(self):
         #rezultat in compressed candles
@@ -216,10 +219,8 @@ class graphData:
 
         while index < size - 1:
             if self.candlesData[index][3] != self.candlesData[index + 1][3]:
-                print('caz 1, fara acumulare')
 
                 if self.candlesData[index][3] == 'red':
-                    print('caz 1.1, candle red')
                     # [x, height, bottom, direction]
                     x_B = self.candlesData[index][0]+candleSize
                     y_B = self.candlesData[index][2]
@@ -229,7 +230,6 @@ class graphData:
                     points.append([x_A,y_A])
                     points.append([x_B,y_B])
                 else:
-                    print('cz 1.2, candles green')
                     x_B = self.candlesData[index][0]
                     y_B = self.candlesData[index][2] + self.candlesData[index][1]
 
@@ -241,16 +241,13 @@ class graphData:
 
                 index += 1
             else:
-                print('caz 2, acumulez mai multe candles')
                 temp_index = index + 1
                 while self.candlesData[temp_index][3] == self.candlesData[temp_index + 1][3] and temp_index < size - 2:
                     temp_index += 1
-                print(f'index:{index},temp_index:{temp_index}')
 
                 # [x, height, bottom, direction]
 
                 if self.candlesData[index][3] == 'red':
-                    print("caz 2, red")
                     x_A = self.candlesData[index][0]
                     y_A = self.candlesData[index][2] + self.candlesData[index][1]
 
@@ -261,7 +258,6 @@ class graphData:
                     points.append([x_B, y_B])
 
                 else:
-                    print("caz 2,green")
                     x_A = self.candlesData[index][0]
                     y_A = self.candlesData[index][2]
 
@@ -280,9 +276,6 @@ class graphData:
     def candlesToFunction_2(self,candleSize):
         #input - candles data
         #output - a candles is transformed into a line
-        print('candles data:',)
-        for x in self.candlesData:
-            print(x)
 
         points = []
 
@@ -384,6 +377,11 @@ class graphData:
         plt.plot(arr_1,arr_2,'r')
         plt.plot(self.inputData,'b')
 
+        index = 0
+        print('candles to function:',self.candlesToFunction)
+        while index < len(self.candlesToFunction)-1:
+            plt.scatter(int(self.candlesToFunction[index][0]), int(self.candlesToFunction[index][1]))
+            index +=1
 
     def reduceInputData(self):
         #mediere a semnalului (media in jurul punctului pe baza vecinilor)
@@ -408,3 +406,4 @@ class graphData:
         plt.plot(new_points,'g')
         plt.plot(new_points_2,'b')
         plt.plot(self.inputData,'r')
+        return new_points_2

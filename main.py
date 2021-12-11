@@ -30,10 +30,6 @@ if __name__ == '__main__':
     graph.generateInternPoints()
     graph.plotCandlesToFunction('Points')
 
-
-
-
-
     plt.show()
 
 

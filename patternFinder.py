@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 '''
 Defineste segment_principal size;
 Primeste combinatiile de la generatorCombinatiiSegmente.(obiectul cu totul)

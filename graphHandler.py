@@ -157,7 +157,7 @@ class graphData:
                             self.candlesData[index][3] = 'red'
 
     #Function from candle
-    def candlesToFunction(self,candleSize):
+    def candlesToFunctionWork(self,candleSize):
         #foloseste data din candlesData
         #data din candlesData trebuie filtrata inainte  daca vr sa il folosim ca input in candles to function
 
@@ -407,3 +407,4 @@ class graphData:
         plt.plot(new_points_2,'b')
         plt.plot(self.inputData,'r')
         return new_points_2
+

@@ -1,27 +1,23 @@
 import matplotlib.pyplot as plt
 import csv
-'''
-Comments section:
-asdasd
-'''
 
 class graphData:
     inputData = None #y values, x is incremented by 1 min value in time
 
     candlesData = None #arr of arr [[x,height,bottom,direction],[],[]....]
 
-    compressCandles = None  #nu tine cont de offset x pe axa, doar de combinatiile dintre trenduri si marimea lor
-
     candlesToFunction = None
-    # temp_points = None #
 
     def __init__(self):
         pass
+    #Input data
     def setInputData(self,data):
         self.inputData = data
+
     def printInputData(self):
         #print vector
         print(self.inputData)
+
     def plotInputData(self,code):
         plt.figure(code)
         # ceva = len(self.inputData)
@@ -30,6 +26,7 @@ class graphData:
         #     arr.append(x)
         plt.plot(self.inputData)
 
+    #Candle data
     def inputToCandle(self,candleSize):
         if self.inputData == None:
             print('input data not generated yet (cannot use inputToCandle before that)')
@@ -158,55 +155,8 @@ class graphData:
                             self.candlesData[index][3] = 'green'
                         else :
                             self.candlesData[index][3] = 'red'
-        print(f"am schimbat: {counter_schimbari} culori in filtru!")
 
-    def groupCandles(self):
-        #rezultat in compressed candles
-
-        size = len(self.candlesData)
-        index = 0
-        compressed_candles = []
-
-        while index < size - 1:
-            if self.candlesData[index][3] != self.candlesData[index+1][3]:
-                compressed_candles.append(self.candlesData[index])
-                index +=1
-            else:
-                temp_index = index +1
-                while self.candlesData[temp_index][3] == self.candlesData[temp_index+1][3]  and temp_index < size - 2:
-                    temp_index +=1
-                # [x, height, bottom, direction]
-                if self.candlesData[index][3] == 'red':
-                    left_top_point = self.candlesData[index][2] + self.candlesData[index][1]
-                    right_bottom_point = self.candlesData[temp_index][2]
-                    newCandle = [0,left_top_point - right_bottom_point,self.candlesData[temp_index][2],'red']
-                    compressed_candles.append(newCandle)
-                else:
-                    left_bottom_point = self.candlesData[index][2]
-                    right_top_point = self.candlesData[temp_index][2] + self.candlesData[temp_index][1]
-                    newCandle = [0,right_top_point - left_bottom_point,self.candlesData[index][2],'green']
-                    compressed_candles.append(newCandle)
-
-
-                index = temp_index +1
-
-        final_candles = []
-        for index,a in enumerate(compressed_candles):
-            temp = compressed_candles[index]
-            temp[0] = index
-            final_candles.append(temp)
-
-        self.compressCandles = final_candles
-
-    def plotCompressedCandles(self,code):
-        plt.figure(code)
-        if self.compressCandles== None:
-            print("groupedCandles not generated yet")
-        else:
-            width = 0.3
-            for x in self.compressCandles:
-                plt.bar(x[0],x[1],width,x[2],color=x[3],align='center')
-
+    #Function from candle
     def candlesToFunction(self,candleSize):
         #foloseste data din candlesData
         #data din candlesData trebuie filtrata inainte  daca vr sa il folosim ca input in candles to function
@@ -363,7 +313,6 @@ class graphData:
                 points.append([x_b, y_b])
                 index = temp_index+1
 
-        print('points cand to fct 2:', points)
         self.candlesToFunction = points
 
     def plotCandlesToFunction(self,code):
@@ -371,18 +320,69 @@ class graphData:
         arr_1 = []
         arr_2 = []
         for a in self.candlesToFunction:
-            arr_1.append(a[0]-1.5)
+            arr_1.append(a[0])
             arr_2.append(a[1])
 #upsss
-        plt.plot(arr_1,arr_2,'r')
-        plt.plot(self.inputData,'b')
+        # plt.plot(arr_1,arr_2,'r')
+        # plt.plot(self.inputData,'b')
 
         index = 0
-        print('candles to function:',self.candlesToFunction)
         while index < len(self.candlesToFunction)-1:
             plt.scatter(int(self.candlesToFunction[index][0]), int(self.candlesToFunction[index][1]))
             index +=1
 
+    def filter_oven_indexes(self):
+        new_arr = []
+        for index, x in enumerate(self.candlesToFunction):
+            if index % 2 !=0 or index == 0:
+                new_arr.append(x)
+
+
+        self.candlesToFunction =new_arr
+
+    def generateInternPoints(self):
+        self.filter_oven_indexes()
+
+        index = 0
+        puncte_noi = []
+        while index < len(self.candlesToFunction)-1:
+            start_point = self.candlesToFunction[index]
+            end_point = self.candlesToFunction[index+1]
+
+            start_x = start_point[0]+1
+            end_x = end_point[0] -1
+
+            x_1 = start_point[0]
+            y_1 = start_point[1]
+
+            x_2 = end_point[0]
+            y_2 = end_point[1]
+
+            if start_x == end_x:
+                #trebui adaugat doar un singur punct
+
+                x_nou = start_x #avem un singur puncte la mijloc de adaugat
+                y_nou = (y_2 - y_1)*(x_nou - x_1)/(x_2 - x_1) + y_1
+
+                puncte_noi.append([x_nou, y_nou])
+
+            else:
+                #trebuie adaugate >1 puncte
+                temp_index = start_x
+                while temp_index <= end_x:
+                    x_nou = temp_index
+                    y_nou = (y_2 - y_1)*(x_nou - x_1)/(x_2 - x_1) + y_1
+                    puncte_noi.append([x_nou, y_nou])
+
+                    temp_index +=1
+
+            index +=1
+        final_list = self.candlesToFunction + puncte_noi
+         #sorteaza dupa x
+        final_list.sort(key=lambda x:x[0])
+        self.candlesToFunction = final_list
+
+    #Reduced intut data (medie vecini)
     def reduceInputData(self):
         #mediere a semnalului (media in jurul punctului pe baza vecinilor)
 

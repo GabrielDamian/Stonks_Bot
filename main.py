@@ -13,7 +13,7 @@ if __name__ == '__main__':
     graph.setInputData(vector)
     # graph.printInputData()
 
-    ##graph.plotInputData('Input Data')
+    graph.plotInputData('Input Data')
 
     graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candles data')
@@ -25,13 +25,12 @@ if __name__ == '__main__':
 
     # print('Filtered candles',graph.candlesData);
 
-    #DO NOT USE THIS ANYMORE!!!!!
-    # graph.groupCandles()
-    ##graph.plotCompressedCandles('Grouped candles')
-
 
     graph.candlesToFunction(candleSize)
+    graph.generateInternPoints()
     graph.plotCandlesToFunction('Points')
+
+
 
 
 

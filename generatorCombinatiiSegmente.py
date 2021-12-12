@@ -1,3 +1,4 @@
+from utils import *
 
 '''
 Primeste un vector de input (modelat in prealabil pentru a scoate zgomotul).
@@ -55,6 +56,9 @@ class generatorSegment:
         print(f'Size segment principal:{self.data["size_segment_principal"]}')
         print(f'Min streching:{self.data["min_stretching"]}')
         print(f'Max streching:{self.data["max_stretching"]}')
+        print(f'Variatii:{self.data["variatii"]})')
+        print(f'Variatii_interpolate:{self.data["variatii_interpolate"]})')
+
 
     def truncateInputData(self,decimals):
         temp =[[round(a[0],decimals), round(a[1],decimals)] for a in self.inputData]
@@ -196,22 +200,41 @@ class generatorSegment:
 
 
 
-    def comprimare_segmente_mari(self):
-        segmente = [x for x in self.data['variatii']]
+    def comprima_interpoleaza_variatii(self):
+        segment_referinta = self.data['segment']
 
-        #lasa aici doar segmentele mari
-        segmente_mari = [int(x) for x in segmente if int(x) > self.data['size_segment_principal']]
+        variatii_interpolare = {}
+        variatii_sizes = []
+        for index_size_variatie in self.data['variatii']:
+            # print('x-aici:',index_size_variatie)
+            variatii_interpolare[index_size_variatie] = []
+            variatii_sizes.append(index_size_variatie)
 
-        print('segmente mari:',segmente_mari)
-        for x in segmente_mari:
-            for index,y in enumerate(self.data['variatii'][x]):
 
-                from_size = x
-                to_size = self.data['size_segment_principal']
-                current_big_arr = y
-                factor_sub_unitar = to_size / from_size
+        for index_size_variatie in variatii_sizes:
+            vector_variatii_curente = self.data['variatii'][index_size_variatie]
+            # print(f'vector variatii curente:{index_size_variatie}:')
 
-                #vr sa comprim current_big_arr de la from_size la to_size (in final o sa aiba to_size puncte)
+            for obj_variatie in vector_variatii_curente:
+                # print(obj_variatie)
+                segment_curent = obj_variatie['values']
+                copy_future_price = obj_variatie['future_price']
+                copy_old_start_price = obj_variatie['values'][0][1]
 
-    def comprimare_segmente_mici(self):
-        pass
+                #segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta, segment_curent)
+
+                if len(segment_curent) < len(segment_referinta):
+                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_curent, segment_referinta)
+                else:
+                    segment_curent_interpolat = segment_curent
+
+
+                obj_variatie_nou= {
+                    'values': segment_curent_interpolat,
+                    'future_price': copy_future_price,
+                    'copy_old_start_price': copy_old_start_price
+                }
+
+                variatii_interpolare[index_size_variatie].append(obj_variatie_nou)
+
+        self.data['variatii_interpolate'] = variatii_interpolare

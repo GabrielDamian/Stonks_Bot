@@ -53,14 +53,13 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
     x_segment_referinta = [a[0] for a in segment_referinta]
     x_segment_factorizat = [a[0] for a in segment_factorizat]
 
-    print('x_segment_referinta:', x_segment_referinta)
-    print('x_segment_factorizat:',x_segment_factorizat)
+    # print('x_segment_referinta:', x_segment_referinta)
+    # print('x_segment_factorizat:',x_segment_factorizat)
 
     for a in x_segment_referinta:
         x_current = a
 
         if x_current in x_segment_factorizat:
-            print('caz 1')
             #avem punct comun intre cele segmente
             x_y_factorizat_aferent = None
             for temp in segment_factorizat:
@@ -72,7 +71,6 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
             segment_rezultat.append(pereche_noua)
 
         else:
-            print('caz 2')
             #gaseste indicii intre care se situeaza
             prev_index =segment_factorizat[0]
             next_index = None
@@ -80,7 +78,7 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
             while index < len(segment_factorizat):
                 next_index = segment_factorizat[index]
                 if prev_index[0] < x_current and x_current < next_index[0]:
-                    pereche_noua =[x_current, yEcuatieDreapta(prev_index, next_index, x_current)]
+                    pereche_noua =[x_current, round(yEcuatieDreapta(prev_index, next_index, x_current),2)]
                     segment_rezultat.append(pereche_noua)
                     break
                 else:
@@ -88,17 +86,18 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
                     prev_index = next_index
 
 
-    print('%%%%%%%%%%', segment_rezultat)
+    # print('Interpolare_final:', segment_rezultat)
 
     #adauga ultimul index manual
 
-    segment_rezultat.append([segment_referinta[-1][0], segment_factorizat[-1][1]])
+    if len(segment_rezultat) < len(segment_referinta):
+        segment_rezultat.append([segment_referinta[-1][0], segment_factorizat[-1][1]])
     return segment_rezultat
 
 
 
 
-def comprimaSegment(segment_mic, segment_mare):
+def comprimaInterpoleazaSegment(segment_mic, segment_mare):
     size_mic = len(segment_mic)
     size_mare = len(segment_mare)
 
@@ -142,14 +141,14 @@ def comprimaSegment(segment_mic, segment_mare):
     for index, a in enumerate(y_mare_factorizat):
         segment_mare_factorizat.append([x_mare_facotirizat[index],a])
 
-    print('Segment mic:',segment_mic)
-    print('Segment mare:', segment_mare)
-    print('Factor width:',factor_width)
-    print('Factor height:', factor_height)
-    print('Segment mare factorizat:',segment_mare_factorizat)
+    # print('Segment mic:',segment_mic)
+    # print('Segment mare:', segment_mare)
+    # print('Factor width:',factor_width)
+    # print('Factor height:', factor_height)
+    # print('Segment mare factorizat:',segment_mare_factorizat)
 
     final_fact_interpolat = interpolare_segmente(segment_mic, segment_mare_factorizat)
-    print('final comprimare interpolare:',final_fact_interpolat)
+    # print('final comprimare interpolare:',final_fact_interpolat)
 
     #segment_mic
 
@@ -195,6 +194,8 @@ def comprimaSegment(segment_mic, segment_mare):
         arr_1.append(a[0])
         arr_2.append(a[1])
     plt.plot(arr_1, arr_2,'v')
+
+    return final_fact_interpolat
 
 
 

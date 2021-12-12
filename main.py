@@ -14,7 +14,7 @@ if __name__ == '__main__':
     graph.setInputData(vector)
     # graph.printInputData()
 
-    graph.plotInputData('Input Data')
+    # graph.plotInputData('Input Data')
 
     graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candles data')
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     graph.candlesToFunctionWork(candleSize)
     graph.generateInternPoints()
-    graph.plotCandlesToFunction('Points')
+    # graph.plotCandlesToFunction('Points')
 
 
 
@@ -65,11 +65,33 @@ if __name__ == '__main__':
 
     # generatorCombinatii.comprimare_segmente_mici()
 
-    segment_mic = [[0,6],[1,4],[2,9],[3,12],[4,5],[5,7],[5,11],[6,15],[8,12]]
-    segment_mare = [[0,1], [1,5], [2,7],[3,9],[4,7],[5, 4],[6,2],[7,5],[8,5],[9,7],[10,5],[11,9],[12,5],[13,11],[14,20],[15,12]]
-    comprimaSegment(segment_mic, segment_mare)
+    segment_1 = [[0,1], [1,5], [2,7],[3,9],[4,7],[5, 4],[6,2],[7,5],[8,5],[9,7],[10,5],[11,9],[12,5],[13,11],[14,20],[15,12]]
+    segment_2 = [[0, 6], [1, 4], [2, 9], [3, 12], [4, 5], [5, 7], [6, 11], [7, 13], [8, 12]]
 
-    plt.show()
+
+    generatorCombinatii.comprima_interpoleaza_variatii()
+
+    segment_referinta = generatorSegment.data['segment']
+    print('Referinta:', segment_referinta)
+
+    print('Variatii:')
+    variatii = generatorSegment.data['variatii']
+    for a in variatii:
+        print(a,variatii[a])
+
+    print('Variatii inter:')
+    variatii_inter = generatorSegment.data['variatii_interpolate']
+    for a in variatii_inter:
+        print(a,variatii_inter[a])
+
+    # segment = comprimaExtindeSegment(segment_1, segment_2)
+    # print('len segment_1:', len(segment_1))
+    # print('len segment_2:',len(segment_2))
+    # print('len segment:',len(segment))
+    # print('segment:', segment)
+
+
+    # plt.show()
 
 
 

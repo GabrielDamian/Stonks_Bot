@@ -14,7 +14,7 @@ if __name__ == '__main__':
     graph.setInputData(vector)
     # graph.printInputData()
 
-    # graph.plotInputData('Input Data')
+    graph.plotInputData('Input Data')
 
     graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candles data')
@@ -58,15 +58,18 @@ if __name__ == '__main__':
     #aduce toate variatiile in 0,0 ca punct de start (nu afecteaza marimea variatiei inca)
     generatorCombinatii.normalizeazaVariatii()
 
-    generatorCombinatii.printVariatii()
+    # generatorCombinatii.printVariatii()
 
     #comprima segmentele mai mari decat segmentul de baza la marimea segmentului de baza (Atat pe ox si cat pe oy)
     # generatorCombinatii.comprimare_segmente_mari()
 
     # generatorCombinatii.comprimare_segmente_mici()
 
+    segment_mic = [[0,6],[1,4],[2,9],[3,12],[4,5],[5,7],[5,11],[6,15],[8,12]]
+    segment_mare = [[0,1], [1,5], [2,7],[3,9],[4,7],[5, 4],[6,2],[7,5],[8,5],[9,7],[10,5],[11,9],[12,5],[13,11],[14,20],[15,12]]
+    comprimaSegment(segment_mic, segment_mare)
 
-    # plt.show()
+    plt.show()
 
 
 

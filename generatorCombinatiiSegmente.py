@@ -149,7 +149,6 @@ class generatorSegment:
         new_variatii = { }
         for x in variatii:
             new_variatii[x] =[]
-            print('Normalizez variatia:',x)
             for index, y in enumerate(variatii[x]):
 
                 values = y['values']
@@ -201,8 +200,9 @@ class generatorSegment:
         segmente = [x for x in self.data['variatii']]
 
         #lasa aici doar segmentele mari
-        segmente_mari = [x for x in segmente if x > self.data['size_segment_principal']]
+        segmente_mari = [int(x) for x in segmente if int(x) > self.data['size_segment_principal']]
 
+        print('segmente mari:',segmente_mari)
         for x in segmente_mari:
             for index,y in enumerate(self.data['variatii'][x]):
 

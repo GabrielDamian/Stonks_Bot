@@ -89,6 +89,10 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
 
 
     print('%%%%%%%%%%', segment_rezultat)
+
+    #adauga ultimul index manual
+
+    segment_rezultat.append([segment_referinta[-1][0], segment_factorizat[-1][1]])
     return segment_rezultat
 
 
@@ -172,7 +176,7 @@ def comprimaSegment(segment_mic, segment_mare):
         arr_2.append(a[1])
 
     plt.figure('kill me')
-    plt.plot(arr_1, arr_2, 'o')
+    plt.plot(arr_1, arr_2, 'b')
 
     #segment mare factorizat
     arr_1 = []

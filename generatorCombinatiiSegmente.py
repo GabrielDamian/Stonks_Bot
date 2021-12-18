@@ -28,6 +28,7 @@ Acum avem:
 
 class generatorSegment:
 
+    #vectorul cu puncte pentru un an (ex.)
     inputData = None
 
     data = {
@@ -140,6 +141,7 @@ class generatorSegment:
                     buffer.append(x)
 
     def printVariatii(self):
+        print('segment baza:',self.data['segment'])
         variatii = self.data['variatii']
 
         for x in variatii:
@@ -223,10 +225,12 @@ class generatorSegment:
 
                 #segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta, segment_curent)
 
-                if len(segment_curent) < len(segment_referinta):
-                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_curent, segment_referinta)
+                if len(segment_curent) > len(segment_referinta):
+                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
                 else:
-                    segment_curent_interpolat = segment_curent
+                    #trebuie facuta alta functie care extinde un segment curent de lungime 2 la un segment referinta de lungime 5
+                    #momentan, nu facem nicio prelucrare asupra segmentului curent aici
+                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
 
 
                 obj_variatie_nou= {

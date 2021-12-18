@@ -49,6 +49,8 @@ def yEcuatieDreapta(point_a, point_b, x_value):
     return y
 
 def interpolare_segmente(segment_referinta, segment_factorizat):
+    #cauta indicii x din segmentul referinta printre indicii (la propriu intre care se situeaza) in segmentul factorizat
+
     segment_rezultat = []
     x_segment_referinta = [a[0] for a in segment_referinta]
     x_segment_factorizat = [a[0] for a in segment_factorizat]
@@ -98,6 +100,7 @@ def interpolare_segmente(segment_referinta, segment_factorizat):
 
 
 def comprimaInterpoleazaSegment(segment_mic, segment_mare):
+    #+ factorizeaza segment
     size_mic = len(segment_mic)
     size_mare = len(segment_mare)
 
@@ -133,71 +136,81 @@ def comprimaInterpoleazaSegment(segment_mic, segment_mare):
 
     x_mare_facotirizat = [a*factor_width for a in x_mare]
 
-    #x_mic = [0,1,2,3]
-    #x_mare = [0,1,2,3,4,5,6]
-    #x_mare_temp = [0.0, 1.33, 2.66, 3.99, 5.32, 6.65, 7.98]
-
     segment_mare_factorizat = []
     for index, a in enumerate(y_mare_factorizat):
         segment_mare_factorizat.append([x_mare_facotirizat[index],a])
 
-    # print('Segment mic:',segment_mic)
-    # print('Segment mare:', segment_mare)
-    # print('Factor width:',factor_width)
-    # print('Factor height:', factor_height)
-    # print('Segment mare factorizat:',segment_mare_factorizat)
-
     final_fact_interpolat = interpolare_segmente(segment_mic, segment_mare_factorizat)
-    # print('final comprimare interpolare:',final_fact_interpolat)
-
-    #segment_mic
-
-
-    arr_1 = []
-    arr_2 = []
-
-    for a in segment_mic:
-        arr_1.append(a[0])
-        arr_2.append(a[1])
-
-    plt.figure('kill me')
-    plt.plot(arr_1, arr_2, 'r')
-
-    arr_1 = []
-    arr_2 = []
-
-    #segment mare
-    arr_1 = []
-    arr_2 = []
-
-    for a in segment_mare:
-        arr_1.append(a[0])
-        arr_2.append(a[1])
-
-    plt.figure('kill me')
-    plt.plot(arr_1, arr_2, 'b')
-
-    #segment mare factorizat
-    arr_1 = []
-    arr_2 = []
-
-    for a in segment_mare_factorizat:
-        arr_1.append(a[0])
-        arr_2.append(a[1])
-    plt.plot(arr_1, arr_2,'g')
-
-    #final fact +  pol
-    arr_1 = []
-    arr_2 = []
-
-    for a in final_fact_interpolat:
-        arr_1.append(a[0])
-        arr_2.append(a[1])
-    plt.plot(arr_1, arr_2,'v')
 
     return final_fact_interpolat
 
 
+def plotArrayCombinat(seg_referinta,array,key_string):
+    # referinta cu albastru
+    #plot array de forma: [[0, 0.0], [1, 11.4], [2, 22.7], [3, 34.1]]
+    print('len ref:',len(seg_referinta))
+    print('len arr:',len(array))
+
+    arr_1 = []
+    arr_2 = []
+    for x in array:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+
+    plt.figure(key_string)
+    plt.plot(arr_1, arr_2, 'r')
+
+    for index, a in enumerate(arr_1):
+        plt.scatter(a, arr_2[index])
+
+
+
+    arr_1 =[]
+    arr_2 =[]
+    for x in seg_referinta:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+    plt.plot(arr_1, arr_2, 'b')
+    for index, a in enumerate(arr_1):
+        plt.scatter(a, arr_2[index])
+
+
+def plotArraySingur(array, key_string):
+    # [[0, 0.0], [1, 11.4], [2, 22.7], [3, 34.1]]
+    arr_1 = []
+    arr_2 = []
+    for x in array:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+
+    plt.figure(key_string)
+    plt.plot(arr_1,arr_2,'r')
+
+def plotArray_curent_interpolar_before(seg_referinta, seg_curent, seg_before, key_string):
+    plt.figure(key_string)
+
+    #blue, red, green
+
+    arr_1 = []
+    arr_2 = []
+    for x in seg_referinta:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+    plt.plot(arr_1,arr_2,'b')
+
+    arr_1 = []
+    arr_2 = []
+    for x in seg_curent:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+    plt.plot(arr_1, arr_2, 'r')
+
+    arr_1 = []
+    arr_2 = []
+    for x in seg_before:
+        arr_1.append(x[0])
+        arr_2.append(x[1])
+    plt.plot(arr_1, arr_2, 'g')
 
 
 

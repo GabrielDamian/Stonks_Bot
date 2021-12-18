@@ -39,12 +39,12 @@ if __name__ == '__main__':
     generatorCombinatii = generatorSegment(graph.candlesToFunction)
 
     #data temporara, patternFinder o sa incerc orice segment(shiftat la dreapta cu o unitate)
-    segment_curent_fals = [[5,28609],[6,28620],[7,28631],[8,28643],[9,28654]]
+    segment_curent_fals = [[5,450],[6,800],[7,600],[8,100],[9,140],[10,250],[11,573],[12,400],[13,700],[14,790],[15,900],[16,1200],[17,1000],[18,1134],[19,1456],[20,1800]]
 
     #seteaza parametrii obiectului (len(segment_curent_fals)),min_strech, max_strech, segment_curent)
-    generatorCombinatii.setParams(5,2,7,segment_curent_fals)
+    generatorCombinatii.setParams(len(segment_curent_fals),10,20,segment_curent_fals)
 
-    #forteaza segment_curent sa inceapa din 0 (atat x cat si y)
+    #forteaza segment_curent sa inceapa din 0 (atat x cat si y) (din x si y scade minimul de x si minimul de y)
     generatorCombinatii.normalizeazaSegmentBaza()
 
     #insereaza cate o cheie in 'variatii' pentru fiecare unitate intre min_strech si max_strech
@@ -55,21 +55,13 @@ if __name__ == '__main__':
 
     # generatorCombinatii.printData()
 
-    #aduce toate variatiile in 0,0 ca punct de start (nu afecteaza marimea variatiei inca)
+    #aduce toate variatiile in 0,0 ca punct de start (nu afecteaza marimea variatiei inca) (la fel cu normalizarea de mai sus, din x si y scade minimul de x si minimul de y)
     generatorCombinatii.normalizeazaVariatii()
 
-    # generatorCombinatii.printVariatii()
 
     #comprima segmentele mai mari decat segmentul de baza la marimea segmentului de baza (Atat pe ox si cat pe oy)
-    # generatorCombinatii.comprimare_segmente_mari()
-
-    # generatorCombinatii.comprimare_segmente_mici()
-
-    segment_1 = [[0,1], [1,5], [2,7],[3,9],[4,7],[5, 4],[6,2],[7,5],[8,5],[9,7],[10,5],[11,9],[12,5],[13,11],[14,20],[15,12]]
-    segment_2 = [[0, 6], [1, 4], [2, 9], [3, 12], [4, 5], [5, 7], [6, 11], [7, 13], [8, 12]]
-
-
     generatorCombinatii.comprima_interpoleaza_variatii()
+
 
     segment_referinta = generatorSegment.data['segment']
     print('Referinta:', segment_referinta)
@@ -84,14 +76,23 @@ if __name__ == '__main__':
     for a in variatii_inter:
         print(a,variatii_inter[a])
 
-    # segment = comprimaExtindeSegment(segment_1, segment_2)
-    # print('len segment_1:', len(segment_1))
-    # print('len segment_2:',len(segment_2))
-    # print('len segment:',len(segment))
-    # print('segment:', segment)
+
+    #nu este definita functie de extindere a segmentului curent din iteratie la lungimea segmentului de referinta
+    #putem vizualiza corect doar segmentele care au fost comprimate len(seg_referinta) < len(segment_curent)
+
+    #referinta cu albastru
+    test_0 = variatii_inter['16'][3]['values']
+    test_0_before = variatii['16'][3]['values']
+    plotArray_curent_interpolar_before(segment_referinta,test_0,test_0_before,'pleaseeee')
+
+    # test_1 = variatii_inter['12'][10]['values']
+    # plotArrayCombinat(segment_referinta, test_1,'test_1')
+    # test_2 = variatii_inter['13'][4]['values']
+    # plotArrayCombinat(segment_referinta, test_2,'test_2')
 
 
-    # plt.show()
+
+    plt.show()
 
 
 

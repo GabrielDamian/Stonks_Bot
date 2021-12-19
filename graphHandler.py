@@ -380,31 +380,6 @@ class graphData:
         final_list = self.candlesToFunction + puncte_noi
          #sorteaza dupa x
         final_list.sort(key=lambda x:x[0])
-        self.candlesToFunction = final_list
-
-    #Reduced intut data (medie vecini)
-    def reduceInputData(self):
-        #mediere a semnalului (media in jurul punctului pe baza vecinilor)
-
-        new_points = []
-        for index,a in enumerate(self.inputData):
-            if index == 0 or index == len(self.inputData)-1:
-                pass
-            else:
-                new_dot = (self.inputData[index-1] + self.inputData[index] + self.inputData[index+1])/3;
-                new_points.append(new_dot)
-
-        new_points_2 = []
-        for index, a in enumerate(new_points):
-            if index == 0 or index == len(new_points) -1:
-                pass
-            else:
-                new_dot = (new_points[index-1] + new_points[index] + new_points[index+1])/3
-                new_points_2.append(new_dot)
-
-        plt.figure('Reduced points')
-        plt.plot(new_points,'g')
-        plt.plot(new_points_2,'b')
-        plt.plot(self.inputData,'r')
-        return new_points_2
+        self.candlesToFunction = [[round(x[0],2),round(x[1],2)] for x in final_list]
+        #bug
 

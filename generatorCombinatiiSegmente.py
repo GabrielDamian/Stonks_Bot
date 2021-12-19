@@ -29,19 +29,20 @@ Acum avem:
 class generatorSegment:
 
     #vectorul cu puncte pentru un an (ex.)
-    inputData = None
 
-    data = {
-        'segment': None,
-        'size_segment_principal': None,
-        'min_stretching': None,
-        'max_stretching': None,
-        'variatii':{
-
-        }
-    }
 
     def __init__(self,newData):
+        self.inputData = None
+
+        self.data = {
+            'segment': None,
+            'size_segment_principal': None,
+            'min_stretching': None,
+            'max_stretching': None,
+            'variatii': {},
+            'variatii_interpolate': {}
+        }
+
         self.inputData = newData
         self.truncateInputData(1)
 
@@ -60,6 +61,8 @@ class generatorSegment:
         print(f'Variatii:{self.data["variatii"]})')
         print(f'Variatii_interpolate:{self.data["variatii_interpolate"]})')
 
+    def returnData(self):
+        return self.data
 
     def truncateInputData(self,decimals):
         temp =[[round(a[0],decimals), round(a[1],decimals)] for a in self.inputData]
@@ -97,9 +100,6 @@ class generatorSegment:
 
         self.data['segment'] = final
 
-
-
-
     def determinaSizeVariatii(self):
         #toate valorile dintre min si max si le pune drept key in 'variatii'
 
@@ -113,8 +113,6 @@ class generatorSegment:
             index +=1
         for x in sizes:
             self.data['variatii'][f'{x}'] = []
-
-
 
     def genereazaVariatii(self):
 
@@ -200,8 +198,6 @@ class generatorSegment:
 
         self.data['variatii'] = new_variatii
 
-
-
     def comprima_interpoleaza_variatii(self):
         segment_referinta = self.data['segment']
 
@@ -242,3 +238,12 @@ class generatorSegment:
                 variatii_interpolare[index_size_variatie].append(obj_variatie_nou)
 
         self.data['variatii_interpolate'] = variatii_interpolare
+
+    def printVariatii(self):
+        print('Variatii')
+        for a in self.data['variatii']:
+            print(self.data['variatii'][a])
+    def printVariatiiInterPolate(self):
+        print('Variatii interpolate:')
+        for a in self.data['variatii_interpolate']:
+            print(self.data['variatii_interpolate'][a])

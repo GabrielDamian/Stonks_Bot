@@ -24,7 +24,7 @@ def readDataFromFile(fileName,linesToRead):
             linesToRead -= 1
             if linesToRead< 0:
                 break
-        print(f'Processed {line_count} lines.')
+        # print(f'Processed {line_count} lines.')
 
         #primul elem din arr este un header de tip string (trash de la citire)
         del vector[0]
@@ -186,24 +186,26 @@ def plotArraySingur(array, key_string):
     plt.figure(key_string)
     plt.plot(arr_1,arr_2,'r')
 
-def plotArray_curent_interpolar_before(seg_referinta, seg_curent, seg_before, key_string):
+def plot_3_arrays(seg_referinta, seg_curent, seg_before, key_string):
     plt.figure(key_string)
 
-    #blue, red, green
+    #red = seg referitna
+    #blue = seg curent
+    #blue = seg curent before compression || extension
 
     arr_1 = []
     arr_2 = []
     for x in seg_referinta:
         arr_1.append(x[0])
         arr_2.append(x[1])
-    plt.plot(arr_1,arr_2,'b')
+    plt.plot(arr_1,arr_2,'r')
 
     arr_1 = []
     arr_2 = []
     for x in seg_curent:
         arr_1.append(x[0])
         arr_2.append(x[1])
-    plt.plot(arr_1, arr_2, 'r')
+    plt.plot(arr_1, arr_2, 'b')
 
     arr_1 = []
     arr_2 = []
@@ -214,5 +216,27 @@ def plotArray_curent_interpolar_before(seg_referinta, seg_curent, seg_before, ke
 
 
 
+def printMostraPatterFinder(mostra):
+    #printeaza un singur obiect din vectorul lui PatternFinder
+    print('Mostra:')
+    print(mostra)
+    print('Seg unic:',mostra['unic'])
+    deeper = mostra['combinatii']
 
+    print('Seg unic normalizat:', deeper['segment'])
+    print('min_streching:', deeper['min_stretching'])
+    print('max_streching:', deeper['max_stretching'])
 
+    deeper_variatii = deeper['variatii']
+    for a in deeper_variatii:
+        print(f'Varitie:{a}')
+        vector_comb_curent = deeper_variatii[a]
+        for b in vector_comb_curent:
+            print(b)
+
+def crossCorelation(arr_1, arr_2):
+    #len(arr_1) == len(arr_2)
+    sum_dif = 0
+    for index, a in enumerate(arr_1):
+        sum_dif += (a-arr_2(index))*(a-arr_2(index))
+    return sum_dif

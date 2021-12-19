@@ -3,11 +3,13 @@ import csv
 from utils import *
 from graphHandler import *
 from generatorCombinatiiSegmente import *
+from patternFinder import *
 
 if __name__ == '__main__':
 
+    #INPUT - FILTRARE ----------------------------
     candleSize = 3
-    vector = readDataFromFile('AAPL.csv',linesToRead=204)
+    vector = readDataFromFile('AAPL.csv',linesToRead=50)
 
     graph = graphData()
 
@@ -29,70 +31,84 @@ if __name__ == '__main__':
 
     graph.candlesToFunctionWork(candleSize)
     graph.generateInternPoints()
-    # graph.plotCandlesToFunction('Points')
+    graph.plotCandlesToFunction('Points')
 
 
 
-    #GENERATOR COMBINATII SEGMENTE
+    #GENERATOR COMBINATII SEGMENTE----------------------------
 
-    #constructorul primeste inputData si il seteaza pe variabila
     generatorCombinatii = generatorSegment(graph.candlesToFunction)
 
-    #data temporara, patternFinder o sa incerc orice segment(shiftat la dreapta cu o unitate)
-    segment_curent_fals = [[5,450],[6,800],[7,600],[8,100],[9,140],[10,250],[11,573],[12,400],[13,700],[14,790],[15,900],[16,1200],[17,1000],[18,1134],[19,1456],[20,1800]]
+    #last 5 min from live chart
+    len_referinta = 37
+    min_ref = len_referinta - 5
+    max_ref = len_referinta + 5
+    segment_curent_fals =[]
+    for index, a in enumerate(graph.candlesToFunction):
+        if index < len_referinta:
+            segment_curent_fals.append(a)
+        else:
+            break
+    plotArraySingur(segment_curent_fals,'test referinta')
 
-    #seteaza parametrii obiectului (len(segment_curent_fals)),min_strech, max_strech, segment_curent)
-    generatorCombinatii.setParams(len(segment_curent_fals),10,20,segment_curent_fals)
+    #segment_curent_fals = [[5,450],[6,800],[7,600],[8,100],[9,140],[10,250],[11,573],[12,400],[13,700],[14,790],[15,900],[16,1200],[17,1000],[18,1134],[19,1456],[20,1800]]
 
-    #forteaza segment_curent sa inceapa din 0 (atat x cat si y) (din x si y scade minimul de x si minimul de y)
+    generatorCombinatii.setParams(len(segment_curent_fals), min_ref, max_ref, segment_curent_fals)
+
+    #x,y from 0
     generatorCombinatii.normalizeazaSegmentBaza()
+    # seg_baza_normalizat = generatorSegment.data['segment']
+    # plotArraySingur(seg_baza_normalizat,'Seg baza normalizat')
 
-    #insereaza cate o cheie in 'variatii' pentru fiecare unitate intre min_strech si max_strech
+
+    #declara range introdus la setParams
     generatorCombinatii.determinaSizeVariatii()
 
-    #parcurge cheile variatiilor si segmenteaza toate segmentele posibile de acea dimensiune
     generatorCombinatii.genereazaVariatii()
 
     # generatorCombinatii.printData()
 
-    #aduce toate variatiile in 0,0 ca punct de start (nu afecteaza marimea variatiei inca) (la fel cu normalizarea de mai sus, din x si y scade minimul de x si minimul de y)
+    #x,y from 0
     generatorCombinatii.normalizeazaVariatii()
 
-
-    #comprima segmentele mai mari decat segmentul de baza la marimea segmentului de baza (Atat pe ox si cat pe oy)
+    #gaseste punctele din segmentul de baza in graficul functiei comprimate sau extinse
     generatorCombinatii.comprima_interpoleaza_variatii()
 
 
-    segment_referinta = generatorSegment.data['segment']
-    print('Referinta:', segment_referinta)
+    #TEMP TESTING AREA----------------------------
 
-    print('Variatii:')
-    variatii = generatorSegment.data['variatii']
-    for a in variatii:
-        print(a,variatii[a])
+    # segment_referinta = generatorSegment.data['segment']
+    # print('Referinta:', segment_referinta)
 
-    print('Variatii inter:')
-    variatii_inter = generatorSegment.data['variatii_interpolate']
-    for a in variatii_inter:
-        print(a,variatii_inter[a])
+    generatorCombinatii.printVariatii()
+    generatorCombinatii.printVariatiiInterPolate()
 
-
-    #nu este definita functie de extindere a segmentului curent din iteratie la lungimea segmentului de referinta
-    #putem vizualiza corect doar segmentele care au fost comprimate len(seg_referinta) < len(segment_curent)
-
-    #referinta cu albastru
-    test_0 = variatii_inter['16'][3]['values']
-    test_0_before = variatii['16'][3]['values']
-    plotArray_curent_interpolar_before(segment_referinta,test_0,test_0_before,'pleaseeee')
-
-    # test_1 = variatii_inter['12'][10]['values']
-    # plotArrayCombinat(segment_referinta, test_1,'test_1')
-    # test_2 = variatii_inter['13'][4]['values']
-    # plotArrayCombinat(segment_referinta, test_2,'test_2')
+    # /variatii = generatorSegment.data['variatii']
+    # variatii_inter = generatorSegment.data['variatii_interpolate']
+    #
+    # test_0 = variatii_inter['42'][0]['values']
+    # test_0_before = variatii['42'][0]['values']
+    # plot_3_arrays(segment_referinta,test_0,test_0_before,'pleaseeee')
 
 
+    #last 5 min handler
+    patternFinder = patternFinder(graph.candlesToFunction,10)
+    patternFinder.segmenteazaInputData()
 
-    plt.show()
+    patternFinder.genereazaCombinatiiSegmente()
+    print('Final data:-------------')
+    # patternFinder.printFinalData()
+
+    #mostra
+    mostraPatterFinder = patternFinder.returnFinalData()
+    for a in mostraPatterFinder:
+        print("--------------------------------")
+        printMostraPatterFinder(a)
+
+    print("AICI TEST")
+    print(mostraPatterFinder)
+
+    # plt.show()
 
 
 

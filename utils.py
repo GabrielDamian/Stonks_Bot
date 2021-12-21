@@ -216,23 +216,6 @@ def plot_3_arrays(seg_referinta, seg_curent, seg_before, key_string):
 
 
 
-def printMostraPatterFinder(mostra):
-    #printeaza un singur obiect din vectorul lui PatternFinder
-    print('Mostra:')
-    print(mostra)
-    print('Seg unic:',mostra['unic'])
-    deeper = mostra['combinatii']
-
-    print('Seg unic normalizat:', deeper['segment'])
-    print('min_streching:', deeper['min_stretching'])
-    print('max_streching:', deeper['max_stretching'])
-
-    deeper_variatii = deeper['variatii']
-    for a in deeper_variatii:
-        print(f'Varitie:{a}')
-        vector_comb_curent = deeper_variatii[a]
-        for b in vector_comb_curent:
-            print(b)
 
 def crossCorelation(arr_1, arr_2):
     #len(arr_1) == len(arr_2)

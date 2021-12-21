@@ -61,8 +61,7 @@ class generatorSegment:
         print(f'Variatii:{self.data["variatii"]})')
         print(f'Variatii_interpolate:{self.data["variatii_interpolate"]})')
 
-    def returnData(self):
-        return self.data
+
 
     def truncateInputData(self,decimals):
         temp =[[round(a[0],decimals), round(a[1],decimals)] for a in self.inputData]
@@ -238,6 +237,8 @@ class generatorSegment:
                 variatii_interpolare[index_size_variatie].append(obj_variatie_nou)
 
         self.data['variatii_interpolate'] = variatii_interpolare
+    def returnData(self):
+        return self.data
 
     def printVariatii(self):
         print('Variatii')

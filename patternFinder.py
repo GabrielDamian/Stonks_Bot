@@ -66,11 +66,11 @@ combinatii: {
 class patternFinder():
     def __init__(self, inputData, size_seg):
         #inputData = graficul pe 1 an (ex)
-        self.size_seg = size_seg
+        self.size_seg = size_seg #size seg de baza (segmente mai exact)
         self.input_data = inputData
 
         self.seg_unice = []
-        #final data
+        #pentru fiecare segment unic, genereaza toate combinatiile posibile (interpolare + scalate folosing generatorCombinatii)
         self.combinatiiPerSegUnic = []
 
     def segmenteazaInputData(self):
@@ -85,13 +85,6 @@ class patternFinder():
                 self.seg_unice.append(seg_unic_temp)
                 seg_unic_temp = []
                 counter_trigger =0
-
-
-    def printData(self):
-        print('Input data:', self.input_data)
-        print('Size seg unic:', self.size_seg)
-        for a in self.seg_unice:
-            print(a)
 
     def genereazaCombinatiiSegmente(self):
 
@@ -111,13 +104,55 @@ class patternFinder():
                 'combinatii': generatorCombinatii.returnData()
             })
 
-    def printFinalData(self):
+    def printInputData(self):
+            print("Input data:")
+            print('Size seg:', self.size_seg)
+            print('Input data (nesegmentat inca):')
+            for a in self.input_data:
+                print(a)
+            print('\n')
+
+    def printSegUnice(self):
+        print('Seg unice (input data segmentat in functie de size_seg):')
+        for a in self.seg_unice:
+            print(a)
+        print('\n')
+    def printCombinatiiPerSegUnic(self):
+        print('Combinatii per seg unic (pr fiecare seg unic, genereaza toate combinatiile folosind generatorCombinatii:')
         for a in self.combinatiiPerSegUnic:
-            print(f'Seg unic:{a["unic"]}')
-            print('Obj comb data:', a['combinatii'])
+            seg_unic = a['unic']
+            combinatii = a['combinatii']
+            print('seg unic:', seg_unic)
 
-    def returnFinalData(self):
-        return self.combinatiiPerSegUnic
+            segment_normalizat = combinatii['segment']
+            print('seg unic normalizat:', segment_normalizat)
 
-    def filtreazaCrossCorelation(self, marja_eroare):
-        pass
+            size_seg_unic_normalizat = combinatii['size_segment_principal']
+            print('size seg unic normalizat:', size_seg_unic_normalizat)
+
+            min_streching_seg_unic_normalizat = combinatii['min_stretching']
+            max_streching_seg_unic_normalizat = combinatii['max_stretching']
+            print('min streching:', min_streching_seg_unic_normalizat)
+            print('max streching:', max_streching_seg_unic_normalizat)
+            #aici mai exista un obiect atasat cu 'variatii' care reprezinta trash dinaintea normalizarii
+            variatii = combinatii['variatii_interpolate']
+            print('\nvariatii:')
+            for a in variatii:
+                print('--variatie:',a)
+                # print(variatii[a])
+                for b in variatii[a]:
+                    print(b)
+            print('---------------')
+
+    def filterWithCrossCorelation(self,abatere):
+        for a in self.combinatiiPerSegUnic:
+            segment_unic_normalizat_curent = a['combinatii']['segment']
+            print('seg unic curent:', segment_unic_normalizat_curent)
+
+            variatii = a['combinatii']['variatii_interpolate']
+            for index, b in enumerate(a['combinatii']['variatii_interpolate']):
+                values_curente = a['combinatii']['variatii_interpolate'][b]
+                #print(values_curente)
+
+
+

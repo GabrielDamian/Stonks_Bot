@@ -219,7 +219,9 @@ def plot_3_arrays(seg_referinta, seg_curent, seg_before, key_string):
 
 def crossCorelation(arr_1, arr_2):
     #len(arr_1) == len(arr_2)
+
     sum_dif = 0
     for index, a in enumerate(arr_1):
-        sum_dif += (a-arr_2(index))*(a-arr_2(index))
+        sum_dif_temp =abs(arr_1[index][1])-abs(arr_2[index][1])
+        sum_dif = sum_dif_temp*sum_dif_temp
     return sum_dif

@@ -50,7 +50,6 @@ if __name__ == '__main__':
     print('TESTING FILTER:-------------------')
     patternFinder.filterWithCrossCorelation(abatere=50)
 
-    # plt.show()
-
+    plt.show()
 
 

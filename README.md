@@ -6,3 +6,6 @@ Try 2 CandlesToFunction vs InputData (Factor de reglare = param_1, param_2 din f
 
 Aproximare CandlesToFunction vs Input Data
 ![DHCP FSM](https://raw.githubusercontent.com/GabrielDamian/Stonks_Bot/master/Aproximare%20CandlesToFunction%20vs%20Input%20Data.png)
+
+Raw input data (blue), input data into PatternFinder (orange)
+![DHCP FSM](https://raw.githubusercontent.com/GabrielDamian/Stonks_Bot/master/Raw%20input%20data%20(blue)%2C%20input%20data%20into%20PatternFinder%20(orange).png)

@@ -146,16 +146,17 @@ class patternFinder():
                     #fiecare obiect pe rand
                     values = y['values']
                     future_price= y['future_price']
+                    old_last_price = y['old_last_price']
 
                 #daca sum < abatere, adauga obiect in obj_nou
                     if crossCorelation(values, segment_normalizat) < abatere:
                         temp_variatie = {
                             'values': values,
                             'future_price': future_price,
+                            'old_last_price': old_last_price,
                             'abatere': crossCorelation(values, segment_normalizat)
                         }
                         obiect_nou_filtrat['variatii'][x].append(temp_variatie)
-
 
 
             # for ceva in obiect_nou_filtrat:
@@ -168,7 +169,7 @@ class patternFinder():
 
     def printFilteredData(self):
         for a in self.combinatiiFiltrate:
-            print('------NEW------:')
+            print('---------NEW SEGMENT---------')
             print('Unic:', a['unic'])
             print('Unic normalizat:', a['unic_normalizat'])
             print('min:', a['min_stretching'])

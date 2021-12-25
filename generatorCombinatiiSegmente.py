@@ -100,10 +100,12 @@ class generatorSegment:
 
                 if counter == size_segment:
                     #stocheaza segment din buffer + goleste buffer
+# !!! Seteaza aici cat de departata sa fie valoarea din viitor
+                    offset_viitor = 4
                     temp_obj = {
                         'values': [a for a in buffer],
-                        'future_price': self.inputData[index-1] if index + 4 < len(self.inputData) else None,
-                        'old_last_price': self.inputData[index-1]
+                        'future_price': self.inputData[index + offset_viitor] if index + offset_viitor < len(self.inputData) else None,
+                        'old_last_price': self.inputData[index-1]  #ultima valoare din vector
                     }
                     self.data['variatii'][variatie].append(temp_obj)
                     buffer = []
@@ -128,7 +130,6 @@ class generatorSegment:
         for x in variatii:
             new_variatii[x] =[]
             for index, y in enumerate(variatii[x]):
-                print('aici:', y)
 
                 values = y['values']
                 future_price = y['future_price']
@@ -194,10 +195,12 @@ class generatorSegment:
                 # print(obj_variatie)
                 segment_curent = obj_variatie['values']
                 copy_future_price = obj_variatie['future_price']
-                copy_old_start_price = obj_variatie['values'][0][1]
+                old_last_price = obj_variatie['old_last_price']
 
                 #segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta, segment_curent)
 
+
+                #bullshit code, trash de la ideea ca se interpoleaza in ordinea marimii segmentelor (nu este certa 100% solutia, ramane temporar structura else de alege a ordinii)
                 if len(segment_curent) > len(segment_referinta):
                     segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
                 else:
@@ -209,7 +212,7 @@ class generatorSegment:
                 obj_variatie_nou= {
                     'values': segment_curent_interpolat,
                     'future_price': copy_future_price,
-                    'copy_old_start_price': copy_old_start_price
+                    'old_last_price': old_last_price
                 }
 
                 variatii_interpolare[index_size_variatie].append(obj_variatie_nou)

@@ -214,14 +214,20 @@ def plot_3_arrays(seg_referinta, seg_curent, seg_before, key_string):
         arr_2.append(x[1])
     plt.plot(arr_1, arr_2, 'g')
 
-
-
-
 def crossCorelation(arr_1, arr_2):
     #len(arr_1) == len(arr_2)
 
     sum_dif = 0
     for index, a in enumerate(arr_1):
-        sum_dif_temp =abs(arr_1[index][1])-abs(arr_2[index][1])
-        sum_dif = sum_dif_temp*sum_dif_temp
+        val_1 = (arr_1[index][1])
+        val_2 = (arr_2[index][1])
+
+        if val_1 > val_2:
+            sum_dif_temp =abs(val_1-val_2)
+        else:
+            sum_dif_temp =abs(val_2-val_1)
+
+
+        sum_dif += sum_dif_temp*sum_dif_temp
+
     return sum_dif

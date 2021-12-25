@@ -9,13 +9,13 @@ if __name__ == '__main__':
 
     #INPUT - FILTRARE ----------------------------
     candleSize = 3
-    vector = readDataFromFile('AAPL.csv',linesToRead=404)
+    vector = readDataFromFile('AAPL.csv',linesToRead=100)
 
     graph = graphData()
 
     graph.setInputData(vector)
     # graph.printInputData()
-    # graph.plotInputData('Candle Data')
+    # graph.plotInputData('Raw input data')
 
     graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candle Data')
@@ -27,21 +27,23 @@ if __name__ == '__main__':
     graph.candlesToFunctionWork(candleSize)
     # graph.plotCandlesToFunction('Without intern points')
     graph.generateInternPoints()
-    graph.plotCandlesToFunction('Candle Data')
+    # graph.plotCandlesToFunction('Candle Data')
 
 
     #GENERATOR COMBINATII SEGMENTE----------------------------
-    #last 5 min handler
     patternFinder = patternFinder(graph.candlesToFunction,20)
     # patternFinder.printInputData()
+    # patternFinder.plotInputData('Input to Pattern Finder:')
 
     patternFinder.segmenteazaInputData()
     # patternFinder.printSegUnice()
 
     patternFinder.genereazaCombinatiiSegmente()
-    # patternFinder.printCombinatiiPerSegUnic()
+    patternFinder.printCombinatiiPerSegUnic()
 
-    print('TESTING FILTER:-------------------')
+
+
+    #FINAL - FITRARE SEGMENTE REDUNDANTE (sum > abatere)
     patternFinder.filterWithCrossCorelation(abatere=20)
 
     # patternFinder.printFilteredData()

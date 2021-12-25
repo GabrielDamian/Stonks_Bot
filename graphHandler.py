@@ -149,7 +149,6 @@ class graphData:
                         else :
                             self.candlesData[index][3] = 'red'
 
-        print("Schimbari:", counter_schimbari)
 
     def candlesToFunctionWork(self,candleSize):
         #foloseste data din candlesData
@@ -234,6 +233,7 @@ class graphData:
             plt.scatter(int(self.candlesToFunction[index][0]), int(self.candlesToFunction[index][1]))
             index +=1
 
+    #util function
     def filter_oven_indexes(self):
         new_arr = []
         for index, x in enumerate(self.candlesToFunction):

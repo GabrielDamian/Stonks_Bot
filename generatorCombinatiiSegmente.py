@@ -102,7 +102,8 @@ class generatorSegment:
                     #stocheaza segment din buffer + goleste buffer
                     temp_obj = {
                         'values': [a for a in buffer],
-                        'future_price': self.inputData[index +4] if index + 4 < len(self.inputData) else None
+                        'future_price': self.inputData[index-1] if index + 4 < len(self.inputData) else None,
+                        'old_last_price': self.inputData[index-1]
                     }
                     self.data['variatii'][variatie].append(temp_obj)
                     buffer = []
@@ -127,9 +128,11 @@ class generatorSegment:
         for x in variatii:
             new_variatii[x] =[]
             for index, y in enumerate(variatii[x]):
+                print('aici:', y)
 
                 values = y['values']
                 future_price = y['future_price']
+                old_last_price = y['old_last_price']
 
 
                 #normalizez vectorul values
@@ -156,17 +159,18 @@ class generatorSegment:
                     new_values.append([a,y_coords_normalized[index]])
 
 
-                new_future_price = []
-                if future_price != None:
-                    new_future_price.append(round(future_price[0] - min_x,1))
-                    new_future_price.append(round(future_price[1] - min_y,1))
-                else:
-                    new_future_price = future_price
+                # new_future_price = []
+                # if future_price != None:
+                #     new_future_price.append(round(future_price[0] - min_x,1))
+                #     new_future_price.append(round(future_price[1] - min_y,1))
+                # else:
+                #     new_future_price = future_price
 
 
                 new_variatii[x].append({
                     'values': new_values,
-                    'future_price': new_future_price
+                    'future_price': future_price,
+                    'old_last_price': old_last_price
                 })
 
         self.data['variatii'] = new_variatii

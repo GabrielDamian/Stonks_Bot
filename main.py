@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 
     #GENERATOR COMBINATII SEGMENTE----------------------------
-    patternFinder = patternFinder(graph.candlesToFunction,20)
+    patternFinder = patternFinder(graph.candlesToFunction,10)
     # patternFinder.printInputData()
     # patternFinder.plotInputData('Input to Pattern Finder:')
 

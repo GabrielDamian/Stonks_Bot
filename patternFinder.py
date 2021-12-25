@@ -73,30 +73,37 @@ class patternFinder():
             })
 
     def printCombinatiiPerSegUnic(self):
-        print('test print combinatii per seg unic:')
+        print('Print combinatii per seg unic: (before filtering)')
         for a in self.combinatiiPerSegUnic:
+            print('-----New seg unic:----------------------')
             seg_unic = a['unic']
             combinatii = a['combinatii']
-            # print('seg unic:', seg_unic)
 
+            print('Seg unic:', seg_unic)
+
+            print('Combinatii: (return from generatorCombinatii)')
             segment_normalizat = combinatii['segment']
-            # print('seg unic normalizat:', segment_normalizat)
+            print('     ->seg unic normalizat:', segment_normalizat)
 
             size_seg_unic_normalizat = combinatii['size_segment_principal']
-            # print('size seg unic normalizat:', size_seg_unic_normalizat)
+            print('     ->size seg unic normalizat:', size_seg_unic_normalizat)
 
             min_streching_seg_unic_normalizat = combinatii['min_stretching']
             max_streching_seg_unic_normalizat = combinatii['max_stretching']
-            # print('min streching:', min_streching_seg_unic_normalizat)
-            # print('max streching:', max_streching_seg_unic_normalizat)
+
+            print('     ->min streching:', min_streching_seg_unic_normalizat)
+            print('     ->max streching:', max_streching_seg_unic_normalizat)
+
+
             #aici mai exista un obiect atasat cu 'variatii' care reprezinta trash dinaintea normalizarii
             variatii = combinatii['variatii_interpolate']
+            print('     ->variatii interpolate:')
             # print('\nvariatii:')
-            # for a in variatii:
-                # print('--variatie:',a)
+            for a in variatii:
+                print('          -->variatie:',a)
                 # print(variatii[a])
-                # for b in variatii[a]:
-                    # print(b)
+                for b in variatii[a]:
+                    print("               --->",b)
             # print('---------------')
 
     def filterWithCrossCorelation(self,abatere):

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from generatorCombinatiiSegmente import *
+import time
 
 #segmenteaza graficul pe un an in segmente de marime size_seg(param_1 din constructor)
 #pentru fiecare segment_unic, genereaza toate combinatiile posibile intre min, max, apoi filtreaza-le pe baza abaterii de la stdin
@@ -49,7 +50,8 @@ class patternFinder():
 
     def setSegmentareInputData(self, hardcodedInputData):
         #test purpose (1 segment for 10 * 500k combinations) (10 din comprimare +-5)
-        self.seg_unice.append(hardcodedInputData)
+        self.seg_unice = [hardcodedInputData]
+        # self.seg_unice.append()
 
     def printSegUnice(self):
         print('Seg unice (input data segmentat in functie de size_seg):')
@@ -185,3 +187,6 @@ class patternFinder():
             variatii = a['variatii']
             for b in variatii:
                 print(b, variatii[b])
+
+    def returnFilteredData(self):
+        return  self.combinatiiFiltrate

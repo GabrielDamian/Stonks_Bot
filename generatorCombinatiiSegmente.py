@@ -88,7 +88,7 @@ class generatorSegment:
             self.data['variatii'][f'{x}'] = []
 
     def genereazaVariatii(self):
-
+        print('aiici:', self.inputData)
         for variatie in self.data["variatii"]:
             size_segment = int(variatie)
 
@@ -101,6 +101,7 @@ class generatorSegment:
                 if counter == size_segment:
                     #stocheaza segment din buffer + goleste buffer
 # !!! Seteaza aici cat de departata sa fie valoarea din viitor
+
                     offset_viitor = 4
                     temp_obj = {
                         'values': [a for a in buffer],

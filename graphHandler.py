@@ -14,7 +14,10 @@ class graphData:
         self.inputData = data
 
     def printInputData(self):
-        print(self.inputData)
+        print('Print input data:')
+        print('len:', len(self.inputData))
+        for a in self.inputData:
+            print(a)
 
     def plotInputData(self,code):
         plt.figure(code)
@@ -285,4 +288,10 @@ class graphData:
         final_list.sort(key=lambda x:x[0])
         self.candlesToFunction = [[round(x[0],2),round(x[1],2)] for x in final_list]
         #bug
+
+    def printCandlesToFunction(self):
+        print('Print candles to function:')
+        print('len:', len(self.candlesToFunction))
+        for a in self.candlesToFunction:
+            print(a)
 

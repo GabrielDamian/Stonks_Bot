@@ -215,7 +215,6 @@ def plot_3_arrays(seg_referinta, seg_curent, seg_before, key_string):
     plt.plot(arr_1, arr_2, 'g')
 
 def crossCorelation(arr_1, arr_2):
-    print('test')
     #len(arr_1) == len(arr_2)
 
     sum_dif = 0

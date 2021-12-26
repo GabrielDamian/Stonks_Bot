@@ -47,6 +47,10 @@ class patternFinder():
                 seg_unic_temp = []
                 counter_trigger =0
 
+    def setSegmentareInputData(self, hardcodedInputData):
+        #test purpose (1 segment for 10 * 500k combinations) (10 din comprimare +-5)
+        self.seg_unice.append(hardcodedInputData)
+
     def printSegUnice(self):
         print('Seg unice (input data segmentat in functie de size_seg):')
         for a in self.seg_unice:
@@ -54,6 +58,8 @@ class patternFinder():
         print('\n')
 
     def genereazaCombinatiiSegmente(self):
+        print('in genereazaCombinatii segmente:')
+        print('len(inputData):', len(self.input_data))
 
         #pentru fiecare segment unic, genereaza toate variatiile de segmente intre min si max, apoi normalizeaza si interpoleaza variatiile, folosind generatorCombinatii
         for a in self.seg_unice:

@@ -88,32 +88,40 @@ class generatorSegment:
             self.data['variatii'][f'{x}'] = []
 
     def genereazaVariatii(self):
-        print('aiici:', self.inputData)
+        counter_varitii = 0
+        counter_iteratii_input_data = 0
+
+        offset_future_price = 4     #cat de departe sa fie future price
+
         for variatie in self.data["variatii"]:
+            counter_varitii += 1
             size_segment = int(variatie)
 
-            index_global = 0 #parcurge tot graful pe un an
-            counter = 0 #stie cand sa dea trigger la un nou segment
-            buffer = [] #acumuleaza cate un segment pe rand
+            for index, el in enumerate(self.inputData):
+                counter_iteratii_input_data +=1
 
-            for index, x in enumerate(self.inputData):
-
-                if counter == size_segment:
-                    #stocheaza segment din buffer + goleste buffer
-# !!! Seteaza aici cat de departata sa fie valoarea din viitor
-
-                    offset_viitor = 4
-                    temp_obj = {
-                        'values': [a for a in buffer],
-                        'future_price': self.inputData[index + offset_viitor] if index + offset_viitor < len(self.inputData) else None,
-                        'old_last_price': self.inputData[index-1]  #ultima valoare din vector
-                    }
-                    self.data['variatii'][variatie].append(temp_obj)
+                if index < len(self.inputData) - size_segment:
                     buffer = []
-                    counter = 0
+                    index_buffer = index
+                    temp_obj = {}
+                    while len(buffer) < size_segment:
+                        buffer.append(self.inputData[index_buffer])
+                        index_buffer += 1
+
+                        temp_obj ={
+                            'values': buffer,
+                            'future_price': self.inputData[index_buffer + offset_future_price] if index_buffer + offset_future_price < len(self.inputData) else None,
+                            'old_last_price': buffer[len(buffer)-1]
+                        }
+
+                    self.data['variatii'][variatie].append(temp_obj)
+
                 else:
-                    counter +=1
-                    buffer.append(x)
+                    #nu mai pot incadra inca un segment de len size_segmetn in spatiul ramas
+                    pass
+
+        print('counter_varitii:', counter_varitii)
+        print('counter_iteratii_input_data:', counter_iteratii_input_data)
 
     def printVariatii(self):
         print('segment baza:',self.data['segment'])

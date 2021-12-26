@@ -69,6 +69,7 @@ class patternFinder():
 
             generatorCombinatii.determinaSizeVariatii()
             generatorCombinatii.genereazaVariatii()
+            # generatorCombinatii.printVariatii()
             generatorCombinatii.normalizeazaVariatii()
             generatorCombinatii.comprima_interpoleaza_variatii()
 

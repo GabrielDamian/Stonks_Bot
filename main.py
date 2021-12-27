@@ -5,41 +5,17 @@ from graphHandler import *
 from generatorCombinatiiSegmente import *
 from patternFinder import *
 
-def runStonks(baseSegment, linesToRead):
-    # INPUT - FILTRARE ----------------------------
-    candleSize = 3
-    # vector = readDataFromFile('AAPL.csv',linesToRead=500000)
-    vector = readDataFromFile('AAPL.csv', linesToRead=1000)
-
-    graph = graphData()
-
-    graph.setInputData(vector)
-    # graph.printInputData()
-    # graph.plotInputData('Raw input data')
-
-    graph.inputToCandle(candleSize=candleSize)
-    # graph.plotCandles('Candle Data')
-
-    graph.filterCandles(0.8,
-                        0.3)  # param_1, param_2 spun cat de atenta la detalii sa fie filtrarea (param mare => exclude delatiile fine)
-    # graph.plotCandles('Candle Filtered Data')
-
-    graph.candlesToFunctionWork(candleSize)
-    # graph.plotCandlesToFunction('Without intern points')
-    graph.generateInternPoints()
-    # graph.plotCandlesToFunction('Candle Data')
-    # graph.printCandlesToFunction()
+def runStonks(baseSegment, linesToCompare):
 
     # GENERATOR COMBINATII SEGMENTE----------------------------
-    patternFinder_1 = patternFinder(graph.candlesToFunction, 40)
+    #!! param_2(size_seg = len(baseSegment)
+    patternFinder_1 = patternFinder(linesToCompare, 40)
 
     # patternFinder.printInputData()
     # patternFinder.plotInputData('Input to Pattern Finder:')
 
-    # patternFinder.segmenteazaInputData()
-
-
-    patternFinder_1.setSegmentareInputData(hardcodedInputData_1)
+    # patternFinder.segmenteazaInputData() #nu o folosim, ii dam direct cate un segment pe rand
+    patternFinder_1.setSegmentareInputData(baseSegment)
     # call here segmenteazaInputData
     # patternFinder.printSegUnice()
 
@@ -47,12 +23,95 @@ def runStonks(baseSegment, linesToRead):
     # patternFinder.printCombinatiiPerSegUnic()
 
     # FINAL - FITRARE SEGMENTE REDUNDANTE (sum > abatere)
-    patternFinder_1.filterWithCrossCorelation(abatere=1000)
+    patternFinder_1.filterWithCrossCorelation(abatere=5000)
     patternFinder_1.printFilteredData()
 
     return patternFinder_1.returnFilteredData()
 
 if __name__ == '__main__':
+
+    patterns_finale = {}
+
+
+
+    #RAW INPUT DATA -> CANDLE FORMAT + FILTER + BACK TO FUNCTION -> graph.candlesToFunction (500k points)
+
+    candleSize = 3
+    # vector = readDataFromFile('AAPL.csv',linesToRead=500000)
+    vector = readDataFromFile('AAPL.csv', linesToRead=500000)
+
+    graph = graphData()
+
+    graph.setInputData(vector)
+    # graph.printInputData()
+    # graph.plotInputData('data')
+
+    graph.inputToCandle(candleSize=candleSize)
+    # graph.plotCandles('Candle Data')
+
+    graph.filterCandles(0.5,0.3)  # param_1, param_2 spun cat de atenta la detalii sa fie filtrarea (param mare => exclude delatiile fine)
+    # graph.plotCandles('Candle Filtered Data')
+
+    graph.candlesToFunctionWork(candleSize)
+    # graph.plotCandlesToFunction('Without intern points')
+    graph.generateInternPoints()
+    # graph.plotCandlesToFunction('data')
+    # graph.printCandlesToFunction()
+
+    #final data in graph.candlesToFunction
+    # plt.show()
+
+    #SEGMENTEAZA INPUT DATA (aprx 500k posibile seg unice)
+    #graph.candlesToFunction contine puncte de forma [x,y]
+    #segmenteaza prin metoda incrementarii aprx 500k segmente de marime x
+
+    segmente_baza = []
+
+    size_seg_unic = 40
+
+    for index, a in enumerate(graph.candlesToFunction):
+        if index < len(graph.candlesToFunction) - size_seg_unic - 1:
+            buffer = []
+            index_buffer = index
+            while len(buffer) < size_seg_unic:
+                buffer.append(graph.candlesToFunction[index_buffer])
+                index_buffer += 1
+
+            segmente_baza.append(buffer)
+
+        else:
+            # nu mai pot incadra inca un segment
+            pass
+
+    # for a in segmente_baza:
+    #     print(a)
+
+    #Pentru fiecare posibil segment unic, ruleaza runStonks pentru cate 50k linii de comparatie (10 comparatii in total)
+    for index,a in enumerate(segmente_baza):
+        current_pas_index = 0
+        max_index = 500000 #nr de linii citite
+        pas = 100000
+
+        print(f'Testez segmentul unic cu index:{index}.')
+
+        patterns_finale_temp = {}
+        while current_pas_index < max_index:
+            print('from:', current_pas_index + 1)
+            print('to:', current_pas_index + pas)
+            obj_temp = runStonks(a, graph.candlesToFunction[current_pas_index + 1:current_pas_index + pas])
+            current_pas_index += pas
+            print('obj temp:', obj_temp)
+
+        # obj_1 = runStonks(a, graph.candlesToFunction[0:10000])
+        # obj_2 = runStonks(a, graph.candlesToFunction[10001:19999])
+        # print(obj_1)
+        # print(obj_2)
+
+
+
+
+'''
+
     hardcodedInputData_1 = [[0, 225.568], [1, 210.95], [2, 196.24], [3, 181.52], [4, 166.9], [5, 152.2], [6, 137.57],
                             [7, 140.25], [8, 146.82], [9, 153.33], [10, 159.89], [11, 166.4], [12, 172.95],
                             [13, 179.54], [14, 186.06], [15, 192.61], [16, 199.14], [17, 205.67], [18, 212.21],
@@ -81,7 +140,51 @@ if __name__ == '__main__':
 
 
 
+    inputDataSegmenteUnice = readDataFromFile('AAPL.csv', linesToRead=1000)
+    inputDataSegmenteUnice_pair_x_y = []
 
+    for index, a in enumerate(inputDataSegmenteUnice):
+        inputDataSegmenteUnice_pair_x_y.append([index, a])
+
+    for a in inputDataSegmenteUnice_pair_x_y:
+        print(a)
+
+
+    seg_unice = []
+    size_seg_unic =3
+    
+    for index, a in enumerate(inputDataSegmenteUnice_pair_x_y):
+
+        if index < len(inputDataSegmenteUnice_pair_x_y) - size_seg_unic - 1 :
+            buffer = []
+            index_buffer = index
+            while len(buffer) < size_seg_unic:
+                buffer.append(inputDataSegmenteUnice_pair_x_y[index_buffer])
+                index_buffer += 1
+
+            seg_unice.append(buffer)
+
+        else:
+            #nu mai pot incadra inca un segment
+            pass
+
+
+    print('Segmente unice incrementale (doar primele 50):')
+    seg_unice = seg_unice[0:49]
+    print('len seg unice:', len(seg_unice))
+    for a in seg_unice:
+        print(a)
+
+    results = []
+    #pentru fiecare segment unic:
+    for a in seg_unice:
+        results.append(runStonks(a, 1000))
+
+    print('Rezultate pentru primele 10 segmente:')
+    for a in results:
+        print('result:')
+        print(a)
+'''
 
 
 
@@ -105,6 +208,5 @@ if __name__ == '__main__':
 
     # print('Test cross corelation manual:',crossCorelation(arr_1,arr_2))
 
-    plt.show()
 
 

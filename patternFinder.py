@@ -12,7 +12,7 @@ class patternFinder():
         self.size_seg = size_seg #size seg de baza (segmente mai exact)
         self.input_data = inputData
 
-        self.seg_unice = []
+        self.seg_unice = [] #sau un singur segment unic cand se "hardcodeaza"
         #pentru fiecare segment unic, genereaza toate combinatiile posibile (interpolare + scalate folosing generatorCombinatii)
         self.combinatiiPerSegUnic = []
         self.combinatiiFiltrate = []
@@ -35,6 +35,7 @@ class patternFinder():
         plt.figure(code)
         plt.plot(temp)
 
+    #nu o sa fie folosita, se face setare segment curent in mod manual
     def segmenteazaInputData(self):
         seg_unic_temp = []
         counter_trigger = 0
@@ -65,8 +66,9 @@ class patternFinder():
 
         #pentru fiecare segment unic, genereaza toate variatiile de segmente intre min si max, apoi normalizeaza si interpoleaza variatiile, folosind generatorCombinatii
         for a in self.seg_unice:
+            #for o sa se executa o singura data, deoarece este setat mereu un element in seg_unice
             generatorCombinatii = generatorSegment(self.input_data)
-            generatorCombinatii.setParams(len(a), len(a)-5, len(a)+5, a)
+            generatorCombinatii.setParams(len(a), len(a)-0, len(a)+0, a)
             generatorCombinatii.normalizeazaSegmentBaza()
 
             generatorCombinatii.determinaSizeVariatii()
@@ -117,7 +119,7 @@ class patternFinder():
 
     def filterWithCrossCorelation(self,abatere):
         for a in self.combinatiiPerSegUnic:
-
+            #for o sa se executa o singura data, deoarece este setat cu append o singura daca un element (seg_unice) este de len = 1
             #fiecare obiect corespunde unui segment_unic
             obiect_nou_filtrat = {}
 

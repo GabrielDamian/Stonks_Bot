@@ -38,10 +38,12 @@ class generatorSegment:
 
 
     def truncateInputData(self,decimals):
+        print('x->truncate input data')
         temp =[[round(a[0],decimals), round(a[1],decimals)] for a in self.inputData]
         self.inputData = temp
 
     def normalizeazaSegmentBaza(self):
+        print('x->normalizeaza segment baza')
         #aduce x si y cu 0 ca punct de start
 
         if self.data['segment'] == None:
@@ -74,6 +76,7 @@ class generatorSegment:
         self.data['segment'] = final
 
     def determinaSizeVariatii(self):
+        print('determina size variatii')
         #toate valorile dintre min si max si le pune drept key in 'variatii'
 
         min = self.data['min_stretching']
@@ -88,6 +91,7 @@ class generatorSegment:
             self.data['variatii'][f'{x}'] = []
 
     def genereazaVariatii(self):
+        print('x->genereaza variatii')
         counter_varitii = 0
         counter_iteratii_input_data = 0
 
@@ -131,6 +135,7 @@ class generatorSegment:
                 print(y)
 
     def normalizeazaVariatii(self):
+        print('x->normalizeaza variatii')
         variatii = self.data["variatii"]
 
         new_variatii = { }
@@ -184,6 +189,7 @@ class generatorSegment:
         self.data['variatii'] = new_variatii
 
     def comprima_interpoleaza_variatii(self):
+        print('x->comprima interpoleaza variatii')
         segment_referinta = self.data['segment']
 
         variatii_interpolare = {}

@@ -23,8 +23,10 @@ def runStonks(baseSegment, linesToCompare):
     # patternFinder.printCombinatiiPerSegUnic()
 
     # FINAL - FITRARE SEGMENTE REDUNDANTE (sum > abatere)
+    print('x->start cross corelation')
     patternFinder_1.filterWithCrossCorelation(abatere=5000)
-    patternFinder_1.printFilteredData()
+    print('x->end cross corelation')
+    # patternFinder_1.printFilteredData()
 
     return patternFinder_1.returnFilteredData()
 
@@ -57,6 +59,7 @@ if __name__ == '__main__':
     graph.generateInternPoints()
     # graph.plotCandlesToFunction('data')
     # graph.printCandlesToFunction()
+
 
     #final data in graph.candlesToFunction
     # plt.show()
@@ -94,7 +97,7 @@ if __name__ == '__main__':
         print(f'------>SEGMENT NOU, (index={index}:)')
         current_pas_index = 0
         max_index = 500000 #nr de linii citite
-        pas = 25000
+        pas = 50000
 
 
         patterns_finale_temp = {
@@ -136,8 +139,8 @@ if __name__ == '__main__':
 
         print(f'TTTTTTT---->Obiect final concatenat pentru index={index}')
         print('test len:', len(patterns_finale_temp['variatii']['40']))
-        for el in patterns_finale_temp:
-            print(el,patterns_finale_temp[el])
+        # for el in patterns_finale_temp:
+        #     print(el,patterns_finale_temp[el])
 
 
 
@@ -145,8 +148,6 @@ if __name__ == '__main__':
         # obj_2 = runStonks(a, graph.candlesToFunction[10001:19999])
         # print(obj_1)
         # print(obj_2)
-
-
 
 
 '''

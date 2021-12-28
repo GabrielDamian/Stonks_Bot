@@ -66,7 +66,7 @@ class patternFinder():
         for a in self.seg_unice:
             #for o sa se executa o singura data, deoarece este setat mereu un element in seg_unice
             generatorCombinatii = generatorSegment(self.input_data)
-            generatorCombinatii.setParams(len(a), len(a)-0, len(a)+0, a)
+            generatorCombinatii.setParams(len(a), len(a)-3, len(a)+3, a)
             generatorCombinatii.normalizeazaSegmentBaza()
 
             generatorCombinatii.determinaSizeVariatii()

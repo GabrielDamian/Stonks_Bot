@@ -68,7 +68,7 @@ if __name__ == '__main__':
     segmente_baza = []
 
     size_seg_unic = 40
-
+    print('inaine de segmetente baza')
     for index, a in enumerate(graph.candlesToFunction):
         if index < len(graph.candlesToFunction) - size_seg_unic - 1:
             buffer = []
@@ -84,23 +84,62 @@ if __name__ == '__main__':
             pass
 
     # for a in segmente_baza:
-    #     print(a)
+        # print(a)
+
+    print(f'S-au generat {len(segmente_baza)} segmente baza:')
+
 
     #Pentru fiecare posibil segment unic, ruleaza runStonks pentru cate 50k linii de comparatie (10 comparatii in total)
     for index,a in enumerate(segmente_baza):
+        print(f'------>SEGMENT NOU, (index={index}:)')
         current_pas_index = 0
         max_index = 500000 #nr de linii citite
-        pas = 100000
+        pas = 25000
 
-        print(f'Testez segmentul unic cu index:{index}.')
 
-        patterns_finale_temp = {}
+        patterns_finale_temp = {
+            'unic':None,
+            'unic_normalizat':None,
+            'min_streching':None,
+            'max_streching':None,
+            'variatii': None
+        }
+        first_time = True
+
         while current_pas_index < max_index:
-            print('from:', current_pas_index + 1)
-            print('to:', current_pas_index + pas)
+            print('from:', current_pas_index + 1,'to:', current_pas_index + pas)
             obj_temp = runStonks(a, graph.candlesToFunction[current_pas_index + 1:current_pas_index + pas])
             current_pas_index += pas
-            print('obj temp:', obj_temp)
+
+            print('-->Obj temp:')
+            print('test len temp(concat):', len(obj_temp['variatii']['40']))
+            # for x in obj_temp:
+            #     print(x, obj_temp[x])
+
+            if first_time:
+                #initializeaza index variatii
+                #copiaza si datele secundare (unic, unic_normalizat, min_streching, max_streching
+                #copiaza usual variatii noi
+                patterns_finale_temp = {
+                    'unic': obj_temp['unic'],
+                    'unic_normalizat': obj_temp['unic_normalizat'],
+                    'min_stretching': obj_temp['min_stretching'],
+                    'max_stretching': obj_temp['max_stretching'],
+                    'variatii': obj_temp['variatii']
+                }
+                first_time = False
+            else:
+                #copiaza doar variatii noi
+                for x in patterns_finale_temp['variatii']:
+                    #x parcurge cheile
+                    patterns_finale_temp['variatii'][x] =patterns_finale_temp['variatii'][x] +  obj_temp['variatii'][x]
+
+        print(f'TTTTTTT---->Obiect final concatenat pentru index={index}')
+        print('test len:', len(patterns_finale_temp['variatii']['40']))
+        for el in patterns_finale_temp:
+            print(el,patterns_finale_temp[el])
+
+
 
         # obj_1 = runStonks(a, graph.candlesToFunction[0:10000])
         # obj_2 = runStonks(a, graph.candlesToFunction[10001:19999])
@@ -111,7 +150,6 @@ if __name__ == '__main__':
 
 
 '''
-
     hardcodedInputData_1 = [[0, 225.568], [1, 210.95], [2, 196.24], [3, 181.52], [4, 166.9], [5, 152.2], [6, 137.57],
                             [7, 140.25], [8, 146.82], [9, 153.33], [10, 159.89], [11, 166.4], [12, 172.95],
                             [13, 179.54], [14, 186.06], [15, 192.61], [16, 199.14], [17, 205.67], [18, 212.21],
@@ -119,6 +157,7 @@ if __name__ == '__main__':
                             [25, 190.52], [26, 177.04], [27, 163.56], [28, 150.1], [29, 136.7], [30, 123.22],
                             [31, 109.74], [32, 96.26], [33, 82.78], [34, 69.3], [35, 55.81], [36, 42.33], [37, 28.85],
                             [38, 15.37], [39, 1.89]]
+                            
     hardcodedInputData_2 = [[0, 225.568], [1, 210.95], [2, 196.24], [3, 181.52], [4, 166.9], [5, 152.2], [6, 137.57],
                             [7, 140.25], [8, 146.82], [9, 153.33], [10, 159.89], [11, 166.4], [12, 172.95],
                             [13, 179.54], [14, 186.06], [15, 192.61], [16, 199.14], [17, 205.67], [18, 212.21],

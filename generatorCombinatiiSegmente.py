@@ -120,8 +120,6 @@ class generatorSegment:
                     #nu mai pot incadra inca un segment de len size_segmetn in spatiul ramas
                     pass
 
-        print('counter_varitii:', counter_varitii)
-        print('counter_iteratii_input_data:', counter_iteratii_input_data)
 
     def printVariatii(self):
         print('segment baza:',self.data['segment'])

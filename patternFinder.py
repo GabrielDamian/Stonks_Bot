@@ -61,8 +61,6 @@ class patternFinder():
         print('\n')
 
     def genereazaCombinatiiSegmente(self):
-        print('in genereazaCombinatii segmente:')
-        print('len(inputData):', len(self.input_data))
 
         #pentru fiecare segment unic, genereaza toate variatiile de segmente intre min si max, apoi normalizeaza si interpoleaza variatiile, folosind generatorCombinatii
         for a in self.seg_unice:
@@ -180,7 +178,6 @@ class patternFinder():
 
     def printFilteredData(self):
         for a in self.combinatiiFiltrate:
-            print('---------NEW SEGMENT---------')
             print('Unic:', a['unic'])
             print('Unic normalizat:', a['unic_normalizat'])
             print('min:', a['min_stretching'])
@@ -191,4 +188,6 @@ class patternFinder():
                 print(b, variatii[b])
 
     def returnFilteredData(self):
-        return  self.combinatiiFiltrate
+        #stim sigur ca mereu o sa fie un singur element acolo
+
+        return  self.combinatiiFiltrate[0]

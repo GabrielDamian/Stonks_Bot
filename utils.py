@@ -3,6 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 
 def readDataFromFile(fileName,linesToRead):
+    print("Citesc date din fisier...")
     vector = []
     with open(fileName) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')

@@ -1,3 +1,4 @@
+import json
 
 #ANY
 
@@ -278,3 +279,11 @@ def crossCorelation(arr_1, arr_2):
         sum_dif += sum_dif_temp*sum_dif_temp
 
     return sum_dif
+
+
+def overwriteFile(arr,file_name):
+
+    arr_json = json.dumps(arr)
+    file_object = open(file_name,'w')
+    file_object.write(arr_json)
+

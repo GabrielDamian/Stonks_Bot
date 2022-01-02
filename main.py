@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     candleSize = 3
     # vector = readDataFromFile('AAPL.csv',linesToRead=500000)
-    vector = readDataFromFile('AAPL.csv', linesToRead=50000)
+    vector = readDataFromFile('AAPL.csv', linesToRead=5000)
 
     graph = graphData()
 
@@ -96,8 +96,8 @@ if __name__ == '__main__':
     for index,a in enumerate(segmente_baza):
         print(f'------>SEGMENT NOU, (index={index}:)')
         current_pas_index = 0
-        max_index = 50000 #nr de linii citite
-        pas = 10000
+        max_index = 5000 #nr de linii citite
+        pas = 1000
 
 
         patterns_finale_temp = {

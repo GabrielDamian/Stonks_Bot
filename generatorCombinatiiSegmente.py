@@ -35,8 +35,6 @@ class generatorSegment:
         print(f'Variatii:{self.data["variatii"]})')
         print(f'Variatii_interpolate:{self.data["variatii_interpolate"]})')
 
-
-
     def truncateInputData(self,decimals):
         print('x->truncate input data')
         temp =[[round(a[0],decimals), round(a[1],decimals)] for a in self.inputData]
@@ -123,7 +121,6 @@ class generatorSegment:
                 else:
                     #nu mai pot incadra inca un segment de len size_segmetn in spatiul ramas
                     pass
-
 
     def printVariatii(self):
         print('segment baza:',self.data['segment'])
@@ -213,13 +210,13 @@ class generatorSegment:
                 #segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta, segment_curent)
 
 
-                #bullshit code, trash de la ideea ca se interpoleaza in ordinea marimii segmentelor (nu este certa 100% solutia, ramane temporar structura else de alege a ordinii)
-                if len(segment_curent) > len(segment_referinta):
-                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
-                else:
-                    #trebuie facuta alta functie care extinde un segment curent de lungime 2 la un segment referinta de lungime 5
-                    #momentan, nu facem nicio prelucrare asupra segmentului curent aici
-                    segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
+                # #bullshit code, trash de la ideea ca se interpoleaza in ordinea marimii segmentelor (nu este certa 100% solutia, ramane temporar structura else de alege a ordinii)
+                # if len(segment_curent) > len(segment_referinta):
+                #     segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
+                # else:
+                #     #trebuie facuta alta functie care extinde un segment curent de lungime 2 la un segment referinta de lungime 5
+                #     #momentan, nu facem nicio prelucrare asupra segmentului curent aici
+                segment_curent_interpolat = comprimaInterpoleazaSegment(segment_referinta,segment_curent)
 
 
                 obj_variatie_nou= {

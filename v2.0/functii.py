@@ -93,7 +93,8 @@ def segmentareArrayFuturePrice(array, size, future_price_offset):
 
             result.append({
                 'values': buffer,
-                'future_price': future_price_val
+                'future_price': future_price_val,
+                'start_index': index
             })
 
         else:
@@ -128,7 +129,8 @@ def normalizareVariatii(vector_variatie):
 
         temp_obj = {
             'values': normzalieaza_segment(a['values']),
-            'future_price': [0, temp_future_price]
+            'future_price': [0, temp_future_price],
+            'start_index': a['start_index']
         }
         vector_variatie_reconstruct.append(temp_obj)
 
@@ -253,7 +255,8 @@ def handlerComprimaInterpoleaza(variatii, size_ref):
     for a in variatii:
         temp_obj = {
             'values': comprimaInterpoleazaSegmente(referinta_fake, a['values']),
-            'future_price': a['future_price']
+            'future_price': a['future_price'],
+            'start_index': a['start_index']
         }
 
         vector_variatii_reconstruct.append(temp_obj)

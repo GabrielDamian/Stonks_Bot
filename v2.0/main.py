@@ -4,13 +4,13 @@ from graphHandler import *
 
 if __name__ == '__main__':
 
-    #STAGE_1
+    # STAGE_1
     print('-->Start Stage 1:')
     candleSize = 3
     filter_candles_1 = 0.5
     filter_candles_2 = 0.3
 
-    vector = readDataFromFile('../AAPL.csv', linesToRead=10000)
+    vector = readDataFromFile('../AAPL.csv', linesToRead=50000)
 
     print("Prelucrez prin candles...")
     graph = graphData()
@@ -22,7 +22,8 @@ if __name__ == '__main__':
     graph.inputToCandle(candleSize=candleSize)
     # graph.plotCandles('Candle Data')
 
-    graph.filterCandles(filter_candles_1,filter_candles_2)  # param_1, param_2 spun cat de atenta la detalii sa fie filtrarea (param mare => exclude delatiile fine)
+    graph.filterCandles(filter_candles_1,
+                        filter_candles_2)  # param_1, param_2 spun cat de atenta la detalii sa fie filtrarea (param mare => exclude delatiile fine)
     # graph.plotCandles('Candle Filtered Data')
 
     graph.candlesToFunctionWork(candleSize)
@@ -32,22 +33,18 @@ if __name__ == '__main__':
     # graph.plotCandlesToFunction('data')
     # graph.printCandlesToFunction()
 
-
-    print("Stage 1 complet.") #data finala in graph.candlesToFunction
+    print("Stage 1 complet.")  # data finala in graph.candlesToFunction
     print("-->Start Stage 2:")
 
-    #COLLECT DATA FOR STAGE 2 & 3
+    # COLLECT DATA FOR STAGE 2 & 3
     size_seg_unic = 40
-    min_streching = 5   #relative to len(size_seg_unic)
+    min_streching = 5  # relative to len(size_seg_unic)
     max_streching = 5
 
-    #STAGE_2 - toate combinatiile posibile pentru segmentul de baza
-
-
+    # STAGE_2 - toate combinatiile posibile pentru segmentul de baza
 
     print('Start generare segmente de baza...')
     segmente_baza = segmentareArray(graph.candlesToFunction, size_seg_unic)
-
 
     print(f'Succes. S-au generat: {len(segmente_baza)} segmente baza de marime: {size_seg_unic}')
     print("Start normalizare segmente de baza...")
@@ -58,11 +55,9 @@ if __name__ == '__main__':
 
     print('Succes. Size segmente normalizate:', len(segmente_baza_normalizate))
 
-
-    #STAGE_3 - generare si prelucrare variatii
+    # STAGE_3 - generare si prelucrare variatii
     print('-->Start Stage 3:')
     print(f'Date: min={min_streching}, max={max_streching}')
-
 
     variatii = determinaSizeVariatii(min_streching, max_streching, size_seg_unic)
 
@@ -74,7 +69,6 @@ if __name__ == '__main__':
         variatii[a] = segmentareArrayFuturePrice(graph.candlesToFunction, int(a), future_price_offset)
 
     print('Succes populare segmente')
-
 
     # for a in variatii:
     #     print(a)
@@ -94,30 +88,27 @@ if __name__ == '__main__':
     print("Start interpolare variatii...")
 
     for index, a in enumerate(variatii):
-        print('variatie nou:', index)
-        variatii[a] = handlerComprimaInterpoleaza(variatii[a],size_seg_unic)
-
+        print(f'variatie noua[{index}]')
+        variatii[a] = handlerComprimaInterpoleaza(variatii[a], size_seg_unic)
 
     # plt.show()
 
-
-    #STAGE 4 - cross corelation for each
+    # STAGE 4 - cross corelation for each
     segmente_finale = []
-    abatere = 10000 #suma cross corelation
+    abatere = 6000  # suma cross corelation
     index_reset_scriere = 0
     for index, a in enumerate(segmente_baza_normalizate):
 
-        index_reset_scriere +=1
+        index_reset_scriere += 1
         if index_reset_scriere == 50:
             print('scriu in fisier:')
-            overwriteFile(segmente_finale,'results.txt')
+            overwriteFile(segmente_finale, 'results.txt')
             index_reset_scriere = 0
-
 
         print('seg baza nou:', index)
         obj_temp = {
-            'segment_baza':a,
-            'variatii':{}
+            'segment_baza': a,
+            'variatii': {}
         }
         for b in variatii:
             obj_temp['variatii'][b] = []
@@ -130,16 +121,13 @@ if __name__ == '__main__':
 
         segmente_finale.append(obj_temp)
 
-
     for index_1, a in enumerate(segmente_finale):
         # print('Segment final index',index)
         # print('Seg baza:',a['segment_baza'])
         total_asemanari = 0
         for b in a['variatii']:
             # print(b,len(a['variatii'][b]))
-            total_asemanari +=len(a['variatii'][b])
+            total_asemanari += len(a['variatii'][b])
 
             print('Total:', total_asemanari)
-
-
 
